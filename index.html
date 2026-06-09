@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MirrorBloom - ปลดปล่อยและงอกงาม</title>
+    <title>พื้นที่แห่งการปลดปล่อย - MirrorBloom</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap');
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Kanit', sans-serif; overflow: hidden; background-color: #f0f0f0; }
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Kanit', sans-serif; overflow: hidden;
+            background-color: #000;
+        }
 
-        /* พื้นหลัง: แสดงภาพทิวทัศน์ที่คุณอัปโหลดไว้ */
+        /* ใช้ภาพทิวทัศน์ของคุณเป็นพื้นหลังหลัก 100% */
         .landscape-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: url('20260609_103427_0000.png') center/cover no-repeat;
@@ -17,122 +21,290 @@
             transition: filter 2s ease;
         }
 
-        /* Canvas สำหรับเอฟเฟกต์ไฟ */
-        #bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
+        /* Canvas สำหรับเอฟเฟกต์ผีเสื้อและไฟ */
+        #effects-canvas {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; z-index: 2;
+            pointer-events: none;
+        }
 
-        /* เลเยอร์ UI */
-        .ui-layer { position: relative; z-index: 10; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .ui-layer {
+            position: relative; z-index: 10;
+            height: 100%; display: flex;
+            justify-content: center; align-items: center;
+            pointer-events: none;
+        }
 
-        /* กล่อง UI */
+        /* กล่องเนื้อหาโปร่งใส */
         .container {
-            width: 90%; max-width: 400px; text-align: center;
-            background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(10px);
-            padding: 30px; border-radius: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            width: 85%; max-width: 420px; text-align: center;
+            background: transparent;
+            padding: 10px;
+            pointer-events: auto;
             transition: all 1s ease;
         }
 
-        textarea { width: 100%; height: 120px; border-radius: 20px; border: 1px solid #ccc; padding: 15px; margin: 15px 0; box-sizing: border-box; }
-        .btn { padding: 12px 30px; border-radius: 25px; border: none; cursor: pointer; color: white; font-weight: bold; font-family: 'Kanit', sans-serif; }
+        .hidden { display: none !important; }
+
+        /* กล่องข้อความใบไม้สีน้ำตาล (ร่วงโรย) */
+        .brown-leaf {
+            width: 100%; height: 150px;
+            background: linear-gradient(135deg, #8B4513, #5C3A21);
+            border: 3px solid #D2B48C;
+            border-radius: 10px 50px 10px 50px;
+            padding: 20px; font-size: 16px; color: #fff;
+            resize: none; outline: none; box-sizing: border-box;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            font-family: 'Kanit', sans-serif;
+            transition: all 1s ease;
+        }
+        .brown-leaf::placeholder { color: rgba(255,255,255,0.6); }
+
+        /* กล่องข้อความใบไม้สีเขียว (เริ่มต้นใหม่) */
+        .green-leaf {
+            width: 100%; height: 130px;
+            background: linear-gradient(135deg, #A8FF78, #4CAF50);
+            border: 3px solid #fff;
+            border-radius: 50px 10px 50px 10px;
+            padding: 20px; font-size: 16px; color: #1a4d2e;
+            resize: none; outline: none; box-sizing: border-box;
+            box-shadow: 0 8px 25px rgba(76,175,80,0.5);
+            font-family: 'Kanit', sans-serif;
+        }
+        .green-leaf::placeholder { color: rgba(26,77,46,0.6); }
+
+        /* ปุ่มกดดีไซน์ 3D */
+        .btn {
+            margin-top: 20px; padding: 12px 35px; font-size: 16px; font-weight: 600;
+            border-radius: 30px; cursor: pointer; border: 2px solid #fff; color: white;
+            transition: all 0.1s ease; font-family: 'Kanit', sans-serif;
+        }
+        .btn-burn { background: #ff7f50; box-shadow: 0 6px 0 #d25324, 0 10px 15px rgba(0,0,0,0.3); }
+        .btn-burn:active { transform: translateY(6px); box-shadow: 0 0px 0 #d25324; }
+        
+        .btn-bloom { background: #4CAF50; box-shadow: 0 6px 0 #2E7D32, 0 10px 15px rgba(0,0,0,0.3); }
+        .btn-bloom:active { transform: translateY(6px); box-shadow: 0 0px 0 #2E7D32; }
+
+        h3 { color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.6); margin-top: 0; font-size: 26px; }
+        .announce-text { color: #fff; font-size: 19px; font-weight: 600; line-height: 1.6; text-shadow: 0 2px 8px rgba(0,0,0,0.7); }
     </style>
 </head>
 <body>
 
-    <div class="landscape-bg" id="landscape"></div>
-    <canvas id="bg-canvas"></canvas>
+    <div class="landscape-bg" id="bg-image"></div>
+    <canvas id="effects-canvas"></canvas>
 
     <div class="ui-layer">
         <div class="container" id="ui-box">
-            <div id="release-screen">
-                <h3>ปลดปล่อยความรู้สึก</h3>
-                <textarea id="anger-text" placeholder="พิมพ์สิ่งที่รบกวนจิตใจคุณ..."></textarea>
-                <button class="btn" style="background:#FF7F50;" onclick="startBurnAnimation()">เผาทำลายและปล่อยวาง</button>
+            
+            <div id="screen-release">
+                <h3>พื้นที่แห่งการปลดปล่อย</h3>
+                <textarea id="text-anger" class="brown-leaf" placeholder="พิมพ์ความรู้สึกด้านลบที่ร่วงโรยอยู่ในใจคุณลงที่นี่..."></textarea>
+                <button class="btn btn-burn" onclick="burnProcess()">เผาทำลายความทุกข์</button>
             </div>
 
-            <div id="bloom-screen" style="display:none; color:#FFF;">
-                <h3>ผลิบานครั้งใหม่</h3>
-                <textarea id="gratitude-input" placeholder="สิ่งที่คุณขอบคุณคือ..."></textarea>
-                <button class="btn" style="background:#4CAF50;" onclick="saveLeaf()">บันทึกการเติบโต</button>
+            <div id="screen-announce" class="hidden">
+                <p class="announce-text">
+                    ยินดีด้วยคุณได้ปลดปล่อยสิ่งที่ค้างในใจเรียบร้อยแล้ว ✨<br>
+                    ต่อจากนี้ไปเป็นการเริ่มต้นสิ่งใหม่...
+                </p>
+                <button class="btn btn-bloom" onclick="showBloomScreen()">ก้าวไปข้างหน้า</button>
             </div>
+
+            <div id="screen-bloom" class="hidden">
+                <h3 style="color: #fff; font-size: 21px; text-shadow: 0 2px 5px rgba(0,0,0,0.6);">คุณได้เรียนรู้หรือต้องการขอบคุณอะไรจากเหตุการณ์นี้?</h3>
+                <textarea id="text-gratitude" class="green-leaf" placeholder="พิมพ์สิ่งดีๆ ที่ได้เรียนรู้ลงบนใบไม้แห่งการเริ่มต้นใหม่..."></textarea>
+                <button class="btn btn-bloom" onclick="bloomProcess()">บันทึกการเติบโต</button>
+            </div>
+
+            <div id="screen-success" class="hidden">
+                <p class="announce-text" style="font-size: 24px; color: #A8FF78; text-shadow: 0 2px 10px rgba(0,0,0,0.8);">
+                    ยินดีด้วย เติบโตไปอีกก้าวแล้วน่ะ 🌱
+                </p>
+                <button class="btn btn-bloom" style="background: rgba(255,255,255,0.2); border-color: #fff;" onclick="resetToHome()">เริ่มต้นปลดปล่อยรอบใหม่</button>
+            </div>
+
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('bg-canvas');
+        const canvas = document.getElementById('effects-canvas');
         const ctx = canvas.getContext('2d');
-        let width, height, particles = [];
+        let width, height;
+        let particles = [];
+        let butterflies = [];
         let animationState = 'idle';
 
-        function resizeCanvas() {
+        function resize() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        window.addEventListener('resize', resize);
+        resize();
 
-        class Particle {
+        // --- คลาสผีเสื้อ ---
+        class Butterfly {
             constructor() {
-                this.x = width / 2 + (Math.random() * 50 - 25);
-                this.y = height / 2 + (Math.random() * 50 - 25);
-                this.size = Math.random() * 5 + 3;
-                this.life = 1;
-                this.vx = Math.random() * 2 - 1;
-                this.vy = Math.random() * -5 - 1;
-                this.color = `rgba(255, ${Math.random() * 150 + 100}, 0, 1)`;
-                this.decay = Math.random() * 0.02 + 0.02;
+                this.x = Math.random() * width;
+                this.y = height * 0.5 + Math.random() * (height * 0.4);
+                this.size = Math.random() * 5 + 4;
+                this.speedX = Math.random() * 1.5 - 0.75;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.wingWing = 0;
+                this.wingSpeed = Math.random() * 0.2 + 0.15;
+                this.color = Math.random() > 0.5 ? '#e1bee7' : '#b2ebf2';
             }
             update() {
-                this.x += this.vx; this.y += this.vy; this.life -= this.decay;
+                this.x += this.speedX + Math.sin(this.wingWing) * 0.5;
+                this.y += this.speedY;
+                this.wingWing += this.wingSpeed;
+
+                if (this.x < 0 || this.x > width) this.speedX *= -1;
+                if (this.y < height * 0.5 || this.y > height * 0.95) this.speedY *= -1;
             }
             draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.fillStyle = this.color;
+                
+                let wingWidth = this.size * Math.abs(Math.sin(this.wingWing));
+
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color.replace(/1\)$/, `${this.life})`);
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = "orange"; // เพิ่มแสงสีส้ม
+                ctx.ellipse(-wingWidth/2, -this.size/2, wingWidth, this.size, 0.5, 0, Math.PI * 2);
+                ctx.ellipse(wingWidth/2, -this.size/2, wingWidth, this.size, -0.5, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.shadowBlur = 0; // reset
+
+                ctx.fillStyle = '#fff';
+                ctx.beginPath();
+                ctx.ellipse(0, 0, 1.5, this.size * 0.8, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
             }
         }
 
-        function animate() {
+        for (let i = 0; i < 6; i++) {
+            butterflies.push(new Butterfly());
+        }
+
+        // --- ระบบไฟเผาไหม้สมจริง (Realistic Fire) ---
+        class FireParticle {
+            constructor() {
+                // ให้ไฟกระจุกตัวอยู่ตรงกลาง
+                this.x = width / 2 + (Math.random() * 100 - 50);
+                this.y = height / 2 + (Math.random() * 40 - 20);
+                // ขยายขนาดไฟให้ดูทรงพลังขึ้น
+                this.size = Math.random() * 18 + 5;
+                this.speedY = Math.random() * -8 - 2;
+                this.speedX = Math.random() * 3 - 1.5;
+                this.life = 1.0;
+                this.decay = Math.random() * 0.02 + 0.015;
+                
+                // สุ่มสีโทนร้อนตั้งแต่เหลืองสว่างไปจนถึงแดงเข้ม
+                let greenHue = Math.floor(Math.random() * 155 + 100); 
+                this.color = `rgba(255, ${greenHue}, 0, `;
+            }
+            update() { 
+                this.y += this.speedY; 
+                this.x += this.speedX; 
+                this.life -= this.decay; 
+                // ให้ขนาดค่อยๆ เล็กลงตอนลอยขึ้น
+                if (this.size > 0.5) this.size -= 0.2; 
+            }
+            draw() {
+                ctx.beginPath(); 
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color + this.life + ')';
+                ctx.shadowBlur = 20; 
+                ctx.shadowColor = 'rgba(255, 100, 0, 1)'; 
+                ctx.fill(); 
+                ctx.shadowBlur = 0;
+            }
+        }
+
+        // --- แอนิเมชันลูปหลัก ---
+        function animationLoop() {
             ctx.clearRect(0, 0, width, height);
-            if (animationState === 'burning') {
-                for (let i = 0; i < 10; i++) particles.push(new Particle());
-            }
-            for (let i = particles.length - 1; i >= 0; i--) {
-                let p = particles[i];
-                p.update(); p.draw();
-                if (p.life <= 0) particles.splice(i, 1);
-            }
-            requestAnimationFrame(animate);
-        }
-        animate();
 
-        function startBurnAnimation() {
-            const textArea = document.getElementById('anger-text');
-            if (textArea.value.trim() === '') return;
-            textArea.style.opacity = '0';
+            butterflies.forEach(bf => {
+                bf.update();
+                bf.draw();
+            });
+
+            // สร้างไฟและแสงส้มเรืองรองเมื่อสถานะเป็น burning
+            if (animationState === 'burning') {
+                // สร้างแสงเรืองรอง (Glow) กลางจอ
+                let gradient = ctx.createRadialGradient(width/2, height/2, 10, width/2, height/2, 250);
+                gradient.addColorStop(0, 'rgba(255, 100, 0, 0.4)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+
+                // ปล่อยสะเก็ดไฟเพิ่มขึ้น
+                for (let i = 0; i < 15; i++) particles.push(new FireParticle());
+            }
+
+            // ใช้เทคนิค Additive Blending (lighter) ให้ไฟรวมตัวกันแล้วสว่างจ้าสมจริง
+            ctx.globalCompositeOperation = 'lighter';
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update(); 
+                particles[i].draw();
+                if (particles[i].life <= 0) particles.splice(i, 1);
+            }
+            // คืนค่ากลับเป็นปกติเพื่อไม่ให้กระทบผีเสื้อ
+            ctx.globalCompositeOperation = 'source-over'; 
+
+            requestAnimationFrame(animationLoop);
+        }
+        animationLoop();
+
+        // --- ระบบฟังก์ชัน ---
+        function burnProcess() {
+            const angerText = document.getElementById('text-anger');
+            if (angerText.value.trim() === '') return;
+
+            // เอฟเฟกต์ใบไม้ไหม้
+            angerText.style.transform = 'scale(0.3) rotate(10deg)';
+            angerText.style.opacity = '0';
+            
+            // ทำให้ฉากหลังมืดลงเพื่อให้ไฟสว่างชัดเจน
+            document.getElementById('bg-image').style.filter = 'brightness(0.3) saturate(0.8)';
             animationState = 'burning';
+
             setTimeout(() => {
-                document.getElementById('release-screen').style.display = 'none';
-                animationState = 'idle'; 
-                startBloomTransition();
+                animationState = 'idle';
+                document.getElementById('screen-release').classList.add('hidden');
+                document.getElementById('screen-announce').classList.remove('hidden');
             }, 3000);
         }
 
-        function startBloomTransition() {
-            document.getElementById('bloom-screen').style.display = 'block';
+        function showBloomScreen() {
+            document.getElementById('screen-announce').classList.add('hidden');
+            document.getElementById('screen-bloom').classList.remove('hidden');
+            // ฉากหลังสว่างสดใสขึ้นเมื่อผ่านช่วงแห่งการปลดปล่อย
+            document.getElementById('bg-image').style.filter = 'brightness(1.1) saturate(1.1)';
         }
 
-        function saveLeaf() {
-            if(document.getElementById('gratitude-input').value.trim() === '') return;
-            alert('บันทึกการเติบโตเรียบร้อย');
-            document.getElementById('gratitude-input').value = '';
-            document.getElementById('bloom-screen').style.display = 'none';
-            document.getElementById('release-screen').style.display = 'block';
-            document.getElementById('anger-text').value = '';
-            document.getElementById('anger-text').style.opacity = '1';
+        function bloomProcess() {
+            const gratitudeText = document.getElementById('text-gratitude');
+            if (gratitudeText.value.trim() === '') return;
+
+            // นำใบไม้ลอยตัวออก ข้ามมาหน้าแสดงความสำเร็จทันที
+            document.getElementById('screen-bloom').classList.add('hidden');
+            document.getElementById('screen-success').classList.remove('hidden');
+        }
+
+        function resetToHome() {
+            document.getElementById('text-gratitude').value = '';
+            document.getElementById('screen-success').classList.add('hidden');
+            document.getElementById('screen-release').classList.remove('hidden');
+            
+            const angerText = document.getElementById('text-anger');
+            angerText.value = '';
+            angerText.style.transform = 'scale(1)';
+            angerText.style.opacity = '1';
+            
+            document.getElementById('bg-image').style.filter = 'brightness(1) saturate(1)';
         }
     </script>
 </body>
