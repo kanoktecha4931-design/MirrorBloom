@@ -10,61 +10,70 @@
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             font-family: 'Kanit', sans-serif; overflow: hidden;
-            background-color: #e0f4f7;
+            background-color: #000;
         }
 
-        /* Canvas หลักอยู่ด้านหลังสุด */
-        #nature-canvas {
+        /* ใช้ภาพเดิมของคุณเป็นพื้นหลังหลักแบบเป๊ะๆ 100% */
+        .landscape-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('20260609_103427_0000.png') center/cover no-repeat;
+            z-index: 0;
+            transition: filter 2s ease;
+        }
+
+        /* Canvas สำหรับใส่เอฟเฟกต์น้ำเคลื่อนไหว, ไฟ และใบไม้ลอย */
+        #effects-canvas {
             position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; z-index: 1;
+            width: 100%; height: 100%; z-index: 2;
+            pointer-events: none;
         }
 
-        /* เลเยอร์ UI */
         .ui-layer {
             position: relative; z-index: 10;
             height: 100%; display: flex;
             justify-content: center; align-items: center;
-            pointer-events: none; /* เพื่อให้สามารถคลิกเล่นกับใบไม้บน Canvas ด้านหลังได้ */
+            pointer-events: none;
         }
 
         .container {
             width: 85%; max-width: 420px; text-align: center;
-            background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(15px);
             padding: 30px; border-radius: 40px;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            pointer-events: auto; /* เปิดให้คลิกเฉพาะตรงกล่องข้อความ */
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            pointer-events: auto;
             transition: all 1s ease;
         }
 
         .hidden { display: none !important; }
 
-        /* กล่องข้อความใบไม้สีน้ำตาล (ความทุกข์) */
+        /* ข้อ 4: ผิวสัมผัสกล่องข้อความใบไม้สีน้ำตาล (ร่วงโรย) */
         .brown-leaf {
             width: 100%; height: 150px;
-            background: linear-gradient(135deg, #a0522d, #5c3a21);
-            border: 2px solid rgba(255,255,255,0.4);
+            background: linear-gradient(135deg, #8B4513, #5C3A21);
+            border: 3px solid #D2B48C;
             border-radius: 10px 50px 10px 50px;
             padding: 20px; font-size: 16px; color: #fff;
             resize: none; outline: none; box-sizing: border-box;
             box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-            transition: all 1.5s ease;
             font-family: 'Kanit', sans-serif;
         }
+        .brown-leaf::placeholder { color: rgba(255,255,255,0.6); }
 
-        /* กล่องข้อความใบไม้สีเขียว (การผลิบาน) */
+        /* ข้อ 4 & 6: กล่องข้อความใบไม้สีเขียว (เริ่มต้นใหม่) */
         .green-leaf {
             width: 100%; height: 130px;
-            background: linear-gradient(135deg, #a8ff78, #4caf50);
-            border: 2px solid #fff;
+            background: linear-gradient(135deg, #A8FF78, #4CAF50);
+            border: 3px solid #fff;
             border-radius: 50px 10px 50px 10px;
             padding: 20px; font-size: 16px; color: #1a4d2e;
             resize: none; outline: none; box-sizing: border-box;
-            box-shadow: 0 8px 20px rgba(76,175,80,0.3);
+            box-shadow: 0 8px 20px rgba(76,175,80,0.4);
             font-family: 'Kanit', sans-serif;
         }
+        .green-leaf::placeholder { color: rgba(26,77,46,0.6); }
 
-        /* ปุ่มกดสไตล์ 3D */
+        /* ปุ่มกดดีไซน์นูนแบบ 3D ปุ่มยุบได้ */
         .btn {
             margin-top: 20px; padding: 12px 35px; font-size: 16px; font-weight: 600;
             border-radius: 30px; cursor: pointer; border: 2px solid #fff; color: white;
@@ -76,26 +85,25 @@
         .btn-bloom { background: #4CAF50; box-shadow: 0 6px 0 #2E7D32, 0 10px 15px rgba(0,0,0,0.2); }
         .btn-bloom:active { transform: translateY(6px); box-shadow: 0 0px 0 #2E7D32; }
 
-        h3 { color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.4); margin-top: 0; font-size: 24px; }
-        .announce-text { color: #fff; font-size: 18px; font-weight: 600; line-height: 1.6; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        h3 { color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.4); margin-top: 0; font-size: 24px; }
+        .announce-text { color: #fff; font-size: 18px; font-weight: 600; line-height: 1.6; text-shadow: 0 2px 6px rgba(0,0,0,0.6); }
     </style>
 </head>
 <body>
 
-    <!-- ระบบกราฟิกและแอนิเมชันทั้งหมดจะวาดลงบนนี้ -->
-    <canvas id="nature-canvas"></canvas>
+    <div class="landscape-bg" id="bg-image"></div>
+    
+    <canvas id="effects-canvas"></canvas>
 
     <div class="ui-layer">
         <div class="container" id="ui-box">
             
-            <!-- สเต็ปที่ 1: พื้นที่แห่งการปลดปล่อย -->
             <div id="screen-release">
                 <h3>พื้นที่แห่งการปลดปล่อย</h3>
                 <textarea id="text-anger" class="brown-leaf" placeholder="พิมพ์ความรู้สึกด้านลบที่ร่วงโรยอยู่ในใจคุณลงที่นี่..."></textarea>
                 <button class="btn btn-burn" onclick="burnProcess()">เผาทำลายความทุกข์</button>
             </div>
 
-            <!-- สเต็ปที่ 2: ข้อความยินดีต้อนรับสู่สิ่งใหม่ -->
             <div id="screen-announce" class="hidden">
                 <p class="announce-text">
                     ยินดีด้วยคุณได้ปลดปล่อยสิ่งที่ค้างในใจเรียบร้อยแล้ว ✨<br>
@@ -104,10 +112,9 @@
                 <button class="btn btn-bloom" onclick="showBloomScreen()">ก้าวไปข้างหน้า</button>
             </div>
 
-            <!-- สเต็ปที่ 3: บันทึกการเติบโตและการผลิบาน -->
             <div id="screen-bloom" class="hidden">
-                <h3 style="color: #2E7D32; text-shadow: none;">คุณได้เรียนรู้หรือต้องการขอบคุณอะไรจากเหตุการณ์นี้?</h3>
-                <textarea id="text-gratitude" class="green-leaf" placeholder="พิมพ์สิ่งดีๆ ที่คุณได้เรียนรู้เพื่อผลิบาน..."></textarea>
+                <h3 style="color: #fff; font-size: 20px;">คุณได้เรียนรู้หรือต้องการขอบคุณอะไรจากเหตุการณ์นี้?</h3>
+                <textarea id="text-gratitude" class="green-leaf" placeholder="พิมพ์สิ่งดีๆ ที่ได้เรียนรู้ลงบนใบไม้แห่งการเริ่มต้นใหม่..."></textarea>
                 <button class="btn btn-bloom" onclick="bloomProcess()">บันทึกการเติบโต</button>
             </div>
 
@@ -115,14 +122,14 @@
     </div>
 
     <script>
-        const canvas = document.getElementById('nature-canvas');
+        const canvas = document.getElementById('effects-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
         let particles = [];
         let stationaryLeaves = [];
         let flyingLeaves = [];
         let waterTime = 0;
-        let animationState = 'idle'; // idle, burning, blooming
+        let animationState = 'idle';
 
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -131,182 +138,138 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // --- ระบบวาดฉากหลังกราฟิก 3D จาก Canvas ---
-        function drawBackground() {
-            // ท้องฟ้าไล่เฉดสีนุ่มนวล
-            let skyGrad = ctx.createLinearGradient(0, 0, 0, height);
-            skyGrad.addColorStop(0, '#a8e6cf');
-            skyGrad.addColorStop(0.5, '#dcedc1');
-            skyGrad.addColorStop(1, '#ffd3b6');
-            ctx.fillStyle = skyGrad;
-            ctx.fillRect(0, 0, width, height);
-
-            // ภูเขาเลเยอร์หลัง (3D Depth)
-            ctx.fillStyle = '#81c784';
+        // --- ข้อ 5: เอฟเฟกต์กระแสน้ำเคลื่อนไหวทับพื้นหลังเดิม ---
+        function drawWaterAnimation() {
+            waterTime += 0.03;
+            
+            // วาดผิวน้ำโปร่งแสงด้านล่างหน้าจอทับตำแหน่งสายน้ำในภาพ เพื่อสร้างมิติการเคลื่อนไหว
+            ctx.fillStyle = 'rgba(135, 206, 250, 0.15)'; 
             ctx.beginPath();
-            ctx.moveTo(0, height * 0.6);
-            ctx.quadraticCurveTo(width * 0.25, height * 0.35, width * 0.5, height * 0.55);
-            ctx.quadraticCurveTo(width * 0.75, height * 0.4, width * 1, height * 0.6);
-            ctx.lineTo(width, height); ctx.lineTo(0, height); ctx.fill();
-
-            // ภูเขาเลเยอร์หน้า + ทุ่งดอกไม้
-            ctx.fillStyle = '#4caf50';
-            ctx.beginPath();
-            ctx.moveTo(0, height * 0.7);
-            ctx.quadraticCurveTo(width * 0.3, height * 0.5, width * 0.6, height * 0.65);
-            ctx.quadraticCurveTo(width * 0.85, height * 0.55, width * 1, height * 0.7);
-            ctx.lineTo(width, height); ctx.lineTo(0, height); ctx.fill();
-
-            // ข้อ 5: สายน้ำเคลื่อนไหว (Water Animation using Sine Wave)
-            waterTime += 0.02;
-            ctx.fillStyle = '#4fc3f7';
-            ctx.beginPath();
-            ctx.moveTo(0, height * 0.85);
-            for (let x = 0; x <= width; x += 10) {
-                // คำนวณคลื่นน้ำให้ขยับต่อเนื่อง
-                let y = height * 0.85 + Math.sin(x * 0.008 + waterTime) * 12;
-                ctx.lineTo(x, y);
-            }
-            ctx.lineTo(width, height);
-            ctx.lineTo(0, height);
-            ctx.fill();
-
-            // ฟองคลื่นสีขาวบนผิวน้ำ
-            ctx.fillStyle = 'rgba(255,255,255,0.4)';
-            ctx.beginPath();
-            ctx.moveTo(0, height * 0.86);
+            ctx.moveTo(0, height * 0.75);
             for (let x = 0; x <= width; x += 15) {
-                let y = height * 0.86 + Math.sin(x * 0.01 + waterTime * 1.5) * 8;
+                let y = height * 0.75 + Math.sin(x * 0.01 + waterTime) * 10;
                 ctx.lineTo(x, y);
             }
             ctx.lineTo(width, height); ctx.lineTo(0, height); ctx.fill();
 
-            // วาดกิ่งไม้ใหญ่ริมฝั่งน้ำ (ขวาบน)
-            ctx.fillStyle = '#5d4037'; // สีน้ำตาลกิ่งไม้
-            ctx.shadowBlur = 10; ctx.shadowColor = 'rgba(0,0,0,0.1)';
-            ctx.beginPath();
-            ctx.moveTo(width, height * 0.1);
-            ctx.quadraticCurveTo(width * 0.8, height * 0.15, width * 0.65, height * 0.2);
-            ctx.lineTo(width * 0.63, height * 0.23);
-            ctx.quadraticCurveTo(width * 0.8, height * 0.19, width, height * 0.16);
-            ctx.fill();
-            ctx.shadowBlur = 0; // reset
+            // เพิ่มประกายแสงวิบวับระยิบระยับบนผิวน้ำ (Water Sparkles)
+            for (let i = 0; i < 8; i++) {
+                let sparkleX = (Math.sin(waterTime + i) * 0.5 + 0.5) * width;
+                let sparkleY = height * 0.82 + Math.cos(waterTime * 0.5 + i) * 20;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.beginPath();
+                ctx.arc(sparkleX, sparkleY, Math.random() * 3 + 1, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-        // --- ข้อ 2: ระบบอนุภาคประกายไฟ (Particle System) ---
+        // --- ข้อ 2: ระบบประกายไฟและเถ้าถ่านพวยพุ่งพัดขึ้นฟ้านุ่มนวล ---
         class FireParticle {
             constructor() {
                 this.x = width / 2 + (Math.random() * 120 - 60);
-                this.y = height / 2 + (Math.random() * 100 - 50);
+                this.y = height / 2 + (Math.random() * 80 - 40);
                 this.size = Math.random() * 6 + 2;
-                this.speedY = Math.random() * -5 - 2;
+                this.speedY = Math.random() * -6 - 2;
                 this.speedX = Math.random() * 4 - 2;
                 this.life = 1.0;
                 this.decay = Math.random() * 0.02 + 0.015;
-                // สุ่มสีให้มีทั้งเปลวไฟและเถ้าถ่านสีเทาควัน
-                this.isAsh = Math.random() > 0.6;
-                this.color = this.isAsh ? 'rgba(130,130,130,' : `rgba(${255}, ${Math.random()*150+50}, 0,`;
+                this.color = Math.random() > 0.5 ? 'rgba(255,100,0,' : 'rgba(255,200,0,';
             }
             update() {
-                this.y += this.speedY;
-                this.x += this.speedX;
-                this.life -= this.decay;
+                this.y += this.speedY; this.x += this.speedX; this.life -= this.decay;
             }
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color + this.life + ')';
-                if(!this.isAsh) {
-                    ctx.shadowBlur = 12;
-                    ctx.shadowColor = 'orange';
-                }
+                ctx.shadowBlur = 10; ctx.shadowColor = 'orange';
                 ctx.fill();
                 ctx.shadowBlur = 0;
             }
         }
 
-        // --- ระบบใบไม้ลอยข้ามฝั่ง (Flying Leaf Animation) ---
+        // --- ข้อ 3: ระบบใบไม้สีเขียวปลิวโค้งข้ามสายน้ำเนียนตา ---
         class FlyingLeaf {
             constructor(targetX, targetY, text) {
-                this.x = width / 2;
-                this.y = height / 2;
-                this.targetX = targetX;
-                this.targetY = targetY;
-                this.text = text;
-                this.progress = 0;
-                this.angle = 0;
+                this.x = width / 2; this.y = height / 2;
+                this.targetX = targetX; this.targetY = targetY;
+                this.text = text; this.progress = 0; this.angle = 0;
             }
             update() {
-                this.progress += 0.015; // ความเร็วในการลอย
+                this.progress += 0.015;
                 this.x = (1 - this.progress) * (width / 2) + this.progress * this.targetX;
-                // ทำให้ลอยเป็นเส้นโค้งอ่อนๆ ข้ามสายน้ำ
-                this.y = (1 - this.progress) * (height / 2) + this.progress * this.targetY - Math.sin(this.progress * Math.PI) * 100;
-                this.angle += 0.1;
+                this.y = (1 - this.progress) * (height / 2) + this.progress * this.targetY - Math.sin(this.progress * Math.PI) * 120;
+                this.angle += 0.08;
             }
             draw() {
                 ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle);
-                ctx.fillStyle = '#81c784';
-                ctx.beginPath();
-                ctx.ellipse(0, 0, 15, 8, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.strokeStyle = '#fff';
-                ctx.stroke();
+                ctx.translate(this.x, this.y); ctx.rotate(this.angle);
+                // วาดใบไม้สีเขียว 3D สดใส
+                let grad = ctx.createLinearGradient(-15, -8, 15, 8);
+                grad.addColorStop(0, '#A8FF78'); grad.addColorStop(1, '#4CAF50');
+                ctx.fillStyle = grad;
+                ctx.beginPath(); ctx.ellipse(0, 0, 16, 9, 0, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
                 ctx.restore();
             }
         }
 
         // --- แอนิเมชันลูปหลัก ---
-        function loop() {
-            drawBackground();
+        function animationLoop() {
+            ctx.clearRect(0, 0, width, height);
 
-            // จัดการประกายไฟ
+            // รันระบบสายน้ำเคลื่อนไหวตลอดเวลา
+            drawWaterAnimation();
+
+            // ทำงานเมื่อกดปุ่มเผาทำลายความทุกข์
             if (animationState === 'burning') {
                 for (let i = 0; i < 6; i++) particles.push(new FireParticle());
             }
             for (let i = particles.length - 1; i >= 0; i--) {
-                particles[i].update();
-                particles[i].draw();
+                particles[i].update(); particles[i].draw();
                 if (particles[i].life <= 0) particles.splice(i, 1);
             }
 
-            // จัดการใบไม้ที่กำลังลอยไปเกาะกิ่งไม้
+            // รันใบไม้ลอยตัว
             for (let i = flyingLeaves.length - 1; i >= 0; i--) {
                 let lf = flyingLeaves[i];
-                lf.update();
-                lf.draw();
+                lf.update(); lf.draw();
                 if (lf.progress >= 1) {
-                    // ลอยถึงเป้าหมาย นำไปเกาะที่กิ่งไม้แบบถาวร
+                    // เมื่อลอยถึงเป้าหมาย ให้นำใบไม้ไปเกาะกิ่งไม้ริมสายน้ำฝั่งขวาถาวร
                     stationaryLeaves.push({ x: lf.targetX, y: lf.targetY, text: lf.text });
                     flyingLeaves.splice(i, 1);
                 }
             }
 
-            // วาดใบไม้ทั้งหมดที่เกาะอยู่บนกิ่งไม้
+            // วาดใบไม้ทั้งหมดที่ผลิบานติดอยู่บนกิ่งไม้
             stationaryLeaves.forEach(leaf => {
-                ctx.fillStyle = '#4caf50';
-                ctx.beginPath();
-                ctx.ellipse(leaf.x, leaf.y, 12, 6, 0.5, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.stroke();
+                ctx.save();
+                ctx.translate(leaf.x, leaf.y);
+                let grad = ctx.createLinearGradient(-12, -6, 12, 6);
+                grad.addColorStop(0, '#A8FF78'); grad.addColorStop(1, '#388E3C');
+                ctx.fillStyle = grad;
+                ctx.beginPath(); ctx.ellipse(0, 0, 12, 6, 0.3, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = '#rgba(255,255,255,0.7)'; ctx.stroke();
+                ctx.restore();
             });
 
-            requestAnimationFrame(loop);
+            requestAnimationFrame(animationLoop);
         }
-        loop();
+        animationLoop();
 
-        // --- ฟังก์ชันควบคุมสเต็ปของหน้าจอ ---
+        // --- ฟังก์ชันการทำงานของแต่ละหน้าตามเงื่อนไขทางจิตวิทยา ---
         function burnProcess() {
             const angerText = document.getElementById('text-anger');
             if (angerText.value.trim() === '') return;
 
-            // ใบไม้สีน้ำตาลแห้งเหี่ยวและหายไป
-            angerText.style.transform = 'scale(0.5)';
+            // ใบไม้สีน้ำตาลแห้งเหี่ยวค่อยๆ หดและจางหายไปเหมือนโดนเผา
+            angerText.style.transform = 'scale(0.3) rotate(10deg)';
             angerText.style.opacity = '0';
+            
+            // เอฟเฟกต์หน้าจอวูบมืดลงเพื่อดึงสายตาไปที่กองไฟ
+            document.getElementById('bg-image').style.filter = 'brightness(0.4) saturate(0.6)';
             animationState = 'burning';
 
-            // จุดไฟเผา 3 วินาที จากนั้นสลับหน้าจอตามข้อ 6
             setTimeout(() => {
                 animationState = 'idle';
                 document.getElementById('screen-release').classList.add('hidden');
@@ -317,40 +280,30 @@
         function showBloomScreen() {
             document.getElementById('screen-announce').classList.add('hidden');
             document.getElementById('screen-bloom').classList.remove('hidden');
+            // ฉากหลังสว่างสดใสขึ้นเป็นปกติเมื่อผ่านช่วงแห่งการปลดปล่อย
+            document.getElementById('bg-image').style.filter = 'brightness(1) saturate(1)';
         }
 
         function bloomProcess() {
             const gratitudeText = document.getElementById('text-gratitude');
             if (gratitudeText.value.trim() === '') return;
 
-            // สุ่มตำแหน่งบนกิ่งไม้ด้านขวาบน
-            let tX = width * 0.7 + Math.random() * (width * 0.25);
-            let tY = height * 0.12 + Math.random() * (height * 0.1);
+            // ปรับตำแหน่งเป้าหมายให้ลอยไปเกาะตรงกลุ่มกิ่งไม้ฝั่งขวาในภาพของคุณพอดี (พิกัดโดยประมาณ)
+            let targetX = width * 0.72 + Math.random() * (width * 0.2);
+            let targetY = height * 0.25 + Math.random() * (height * 0.25);
 
-            // สร้างใบไม้ลอยไปติดกิ่งไม้
-            flyingLeaves.push(new FlyingLeaf(tX, tY, gratitudeText.value));
+            // ส่งใบไม้สีเขียวลอยโค้งไปแปะที่กิ่งไม้
+            flyingLeaves.push(new FlyingLeaf(targetX, targetY, gratitudeText.value));
 
-            // รีเซ็ตระบบเพื่อกลับมาระบายใหม่
+            // รีเซ็ตฟอร์มกลับไปหน้าแรกเพื่อให้ใช้งานต่อได้รอบใหม่
             gratitudeText.value = '';
             document.getElementById('screen-bloom').classList.add('hidden');
             document.getElementById('screen-release').classList.remove('hidden');
             
-            // คืนค่ากล่องข้อความใบไม้สีน้ำตาลให้กลับมาพิมพ์ได้ใหม่
+            // เรียกคืนสภาพกล่องข้อความใบไม้สีน้ำตาลในรอบถัดไป
             const angerText = document.getElementById('text-anger');
-            angerText.value = '';
-            angerText.style.transform = 'scale(1)';
-            angerText.style.opacity = '1';
+            angerText.value = ''; angerText.style.transform = 'scale(1)'; angerText.style.opacity = '1';
         }
-
-        // ลูกเล่นเพิ่มเติม: เมื่อเอาเมาส์หรือนิ้วไปจิ้มแถวกิ่งไม้ จะขึ้นแสดงข้อความคำขอบคุณที่เคยบันทึกไว้
-        canvas.addEventListener('click', (e) => {
-            stationaryLeaves.forEach(leaf => {
-                let dist = Math.hypot(e.clientX - leaf.x, e.clientY - leaf.y);
-                if(dist < 20) {
-                    alert("เมล็ดพันธุ์แห่งปัญญาของคุณบอกว่า: " + leaf.text);
-                }
-            });
-        });
     </script>
 </body>
 </html>
