@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MirrorBloom - ปรับคลื่นความถี่ (Stage 1 & 2)</title>
+    <title>MirrorBloom - ยกระดับคลื่นความถี่</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap');
 
@@ -36,11 +36,10 @@
         }
 
         .hidden { display: none !important; opacity: 0; pointer-events: none; }
-        
-        .fade-in { animation: fadeIn 1.5s forwards; }
+        .fade-in { animation: fadeIn 1s forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- STAGE 1: ใบไม้สีน้ำตาล --- */
+        /* --- รูปแบบกล่องข้อความ --- */
         .brown-leaf {
             width: 100%; height: 150px;
             background: linear-gradient(135deg, #8B4513, #5C3A21);
@@ -50,25 +49,47 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.5); font-family: 'Kanit', sans-serif;
             transition: all 0.4s ease; transform-origin: center;
         }
-        .brown-leaf::placeholder { color: rgba(255,255,255,0.6); font-weight: 300; }
-
-        /* --- STAGE 2: ใบไม้สีเหลืองอำพัน --- */
+        
         .yellow-leaf {
             width: 100%; height: 130px;
             background: linear-gradient(135deg, #FFCA28, #FF8F00);
             border: 3px solid #FFF3E0; border-radius: 50px 10px 50px 10px;
             padding: 20px; font-size: 16px; color: #4E342E; line-height: 1.5;
             resize: none; outline: none; box-sizing: border-box;
-            box-shadow: 0 8px 25px rgba(255,143,0,0.4); font-family: 'Kanit', sans-serif;
+            box-shadow: 0 8px 20px rgba(255,143,0,0.4); font-family: 'Kanit', sans-serif;
         }
-        .yellow-leaf::placeholder { color: rgba(78,52,46,0.5); font-weight: 400; }
 
-        /* --- ข้อความทำสมาธิ (Meditation Overlay) --- */
+        .blue-leaf {
+            width: 100%; height: 130px;
+            background: linear-gradient(135deg, #4DD0E1, #00838F);
+            border: 3px solid #E0F7FA; border-radius: 10px 50px 10px 50px;
+            padding: 20px; font-size: 16px; color: #FFF; line-height: 1.5;
+            resize: none; outline: none; box-sizing: border-box;
+            box-shadow: 0 8px 20px rgba(0,131,143,0.4); font-family: 'Kanit', sans-serif;
+        }
+
+        textarea::placeholder, input::placeholder { color: rgba(255,255,255,0.6); font-weight: 300; }
+        .yellow-leaf::placeholder { color: rgba(78,52,46,0.5); }
+
+        /* --- Input สำหรับ Stage 3 (Focus Wheel) --- */
+        .focus-input {
+            width: 100%; height: 45px; border-radius: 25px;
+            background: rgba(255,255,255,0.2); border: 2px solid #FFF;
+            padding: 10px 20px; margin: 6px 0; color: #FFF;
+            font-family: 'Kanit'; outline: none; box-sizing: border-box;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); backdrop-filter: blur(5px);
+        }
+        .core-focus-display {
+            background: rgba(255, 202, 40, 0.9); color: #4E342E;
+            padding: 12px; border-radius: 15px; margin-bottom: 15px;
+            font-weight: 500; box-shadow: 0 4px 15px rgba(255,202,40,0.5);
+        }
+
+        /* --- ข้อความทำสมาธิ --- */
         .breathe-text {
             color: #fff; font-size: 26px; font-weight: 400; line-height: 1.6;
-            text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 4px 15px rgba(0,0,0,1);
-            animation: breathePulse 4s infinite ease-in-out; /* ปรับให้เต้นช้าลงตามจังหวะหายใจจริง */
-            margin: 0; padding: 20px;
+            text-shadow: 0 4px 15px rgba(0,0,0,1);
+            animation: breathePulse 4s infinite ease-in-out; margin: 0; padding: 20px;
         }
         @keyframes breathePulse {
             0% { opacity: 0.1; transform: scale(0.95); }
@@ -78,19 +99,22 @@
 
         /* --- ปุ่มกด --- */
         .btn {
-            margin-top: 25px; padding: 14px 35px; font-size: 16px; font-weight: 600;
+            margin-top: 20px; padding: 12px 35px; font-size: 16px; font-weight: 600;
             border-radius: 30px; cursor: pointer; border: 2px solid #fff; color: white;
             transition: all 0.2s ease; font-family: 'Kanit', sans-serif; letter-spacing: 0.5px;
         }
-        .btn-burn { background: #ff7f50; box-shadow: 0 6px 0 #d25324, 0 10px 15px rgba(0,0,0,0.4); }
+        .btn-burn { background: #ff7f50; box-shadow: 0 6px 0 #d25324; }
         .btn-burn:active { transform: translateY(6px); box-shadow: 0 0px 0 #d25324; }
-        
-        .btn-pivot { background: #FF8F00; box-shadow: 0 6px 0 #E65100, 0 10px 15px rgba(0,0,0,0.4); }
+        .btn-pivot { background: #FF8F00; box-shadow: 0 6px 0 #E65100; }
         .btn-pivot:active { transform: translateY(6px); box-shadow: 0 0px 0 #E65100; }
+        .btn-bridge { background: #66BB6A; box-shadow: 0 6px 0 #388E3C; }
+        .btn-bridge:active { transform: translateY(6px); box-shadow: 0 0px 0 #388E3C; }
+        .btn-creator { background: #00ACC1; box-shadow: 0 6px 0 #00838F; }
+        .btn-creator:active { transform: translateY(6px); box-shadow: 0 0px 0 #00838F; }
 
-        h3 { color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); margin-top: 0; font-size: 24px; font-weight: 500; }
-        .announce-text { color: #fff; font-size: 17px; font-weight: 400; line-height: 1.6; text-shadow: 0 2px 8px rgba(0,0,0,0.8); margin-bottom: 15px; }
-        .highlight { color: #FFCA28; font-weight: 600; font-size: 20px; }
+        h3 { color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); margin-top: 0; font-size: 22px; font-weight: 500; }
+        .announce-text { color: #fff; font-size: 16px; font-weight: 400; line-height: 1.5; text-shadow: 0 2px 8px rgba(0,0,0,0.8); margin-bottom: 15px; }
+        .highlight { color: #FFCA28; font-weight: 600; font-size: 18px; }
     </style>
 </head>
 <body>
@@ -102,8 +126,8 @@
         <div class="container" id="ui-box">
             
             <div id="screen-release" class="fade-in">
-                <h3>1. ปลดปล่อยอารมณ์ความรู้สึกด้านแย่ ที่คุณกำลังเป็นอยู่ตอนนี้</h3>
-                <textarea id="text-anger" class="brown-leaf" placeholder="ยอมรับและปลดปล่อย... พิมพ์สิ่งที่คุณรู้สึกติดขัด กังวล หรือสิ่งที่คุณไม่ต้องการในตอนนี้ เพื่อคลายพลังงานด้านลบออกไป"></textarea>
+                <h3>1. ปลดปล่อยอารมณ์ด้านแย่ ที่คุณกำลังเป็นอยู่ตอนนี้</h3>
+                <textarea id="text-anger" class="brown-leaf" placeholder="ยอมรับและปลดปล่อย... พิมพ์สิ่งที่คุณรู้สึกติดขัด เพื่อคลายพลังงานด้านลบออกไป"></textarea>
                 <button class="btn btn-burn" onclick="burnProcess()">เผาสลายและส่งต่อให้จักรวาล</button>
             </div>
 
@@ -118,11 +142,28 @@
             <div id="screen-pivot" class="hidden">
                 <h3>2. หมุนทิศทางความคิด (Pivot)</h3>
                 <p class="announce-text">
-                    ในเมื่อสิ่งเมื่อสักครู่ คือสิ่งที่คุณ <span style="color:#ff7f50;">"ไม่ต้องการ"</span><br>
+                    ในเมื่อเมื่อสักครู่ คือสิ่งที่คุณ <span style="color:#ff7f50;">"ไม่ต้องการ"</span><br>
                     แล้วตอนนี้... คุณ <span class="highlight">"ต้องการ"</span> อะไรแทน?
                 </p>
-                <textarea id="text-pivot" class="yellow-leaf" placeholder="พิมพ์สิ่งที่คุณปรารถนาจะให้เกิดขึ้นแทนที่... (เช่น ฉันอยากรู้สึกสงบ, ฉันต้องการทางออกที่ง่ายดาย)"></textarea>
+                <textarea id="text-pivot" class="yellow-leaf" placeholder="พิมพ์ความปรารถนาใหม่ของคุณ... (เช่น ฉันอยากรู้สึกสงบ, ฉันต้องการทางออกที่ดีที่สุด)"></textarea>
                 <button class="btn btn-pivot" onclick="proceedToStage3()">ล็อกเป้าหมายใหม่</button>
+            </div>
+
+            <div id="screen-bridge" class="hidden">
+                <h3>3. สร้างสะพานความเชื่อ (Focus Wheel)</h3>
+                <p class="announce-text">เพื่อดึงดูด <span id="display-core-focus" class="highlight">...</span><br>ลองพิมพ์เหตุผลเล็กๆ 3 ข้อ ที่ทำให้สิ่งนี้ "เป็นไปได้"</p>
+                <div id="core-focus-box" class="core-focus-display">เป้าหมายของคุณ</div>
+                <input type="text" class="focus-input" placeholder="เหตุผลที่ 1 (เช่น ฉันเคยผ่านเรื่องยากกว่านี้มาแล้ว)...">
+                <input type="text" class="focus-input" placeholder="เหตุผลที่ 2 (เช่น ฉันกำลังเรียนรู้และเก่งขึ้นทุกวัน)...">
+                <input type="text" class="focus-input" placeholder="เหตุผลที่ 3 (เช่น ทุกปัญหามีทางออกเสมอ)...">
+                <button class="btn btn-bridge" onclick="proceedToStage4()">สร้างความเชื่อมั่น</button>
+            </div>
+
+            <div id="screen-creator" class="hidden">
+                <h3>4. กำหนดพลังงานล่วงหน้า (Pre-paving)</h3>
+                <p class="announce-text">สวมบทบาทผู้สร้างชีวิต... ก่อนคุณจะไปทำกิจกรรมต่อไป คุณตั้งใจจะให้เวลานั้นเต็มไปด้วยความรู้สึกแบบไหน?</p>
+                <textarea id="text-creator" class="blue-leaf" placeholder="พิมพ์เจตจำนงของคุณ... (เช่น ฉันตั้งใจว่าวันนี้ฉันจะยิ้มให้ตัวเองและดึงดูดแต่สิ่งดีๆ)"></textarea>
+                <button class="btn btn-creator" onclick="proceedToStage5()">ส่งเจตจำนงออกไป</button>
             </div>
 
         </div>
@@ -134,7 +175,7 @@
         let width, height;
         let particles = [];
         let butterflies = [];
-        let animationState = 'idle'; // idle, burning, fading
+        let animationState = 'idle';
 
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -143,64 +184,51 @@
         window.addEventListener('resize', resize);
         resize();
 
+        // ผีเสื้อ
         class Butterfly {
             constructor() {
-                this.x = Math.random() * width;
-                this.y = height * 0.5 + Math.random() * (height * 0.4);
-                this.size = Math.random() * 5 + 4;
-                this.speedX = Math.random() * 1.5 - 0.75;
-                this.speedY = Math.random() * 1 - 0.5;
-                this.wingWing = 0;
-                this.wingSpeed = Math.random() * 0.2 + 0.15;
+                this.x = Math.random() * width; this.y = height * 0.5 + Math.random() * (height * 0.4);
+                this.size = Math.random() * 5 + 4; this.speedX = Math.random() * 1.5 - 0.75;
+                this.speedY = Math.random() * 1 - 0.5; this.wingWing = 0; this.wingSpeed = Math.random() * 0.2 + 0.15;
                 this.color = Math.random() > 0.5 ? '#e1bee7' : '#b2ebf2';
             }
             update() {
-                this.x += this.speedX + Math.sin(this.wingWing) * 0.5;
-                this.y += this.speedY;
-                this.wingWing += this.wingSpeed;
-                if (this.x < 0 || this.x > width) this.speedX *= -1;
-                if (this.y < height * 0.5 || this.y > height * 0.95) this.speedY *= -1;
+                this.x += this.speedX + Math.sin(this.wingWing) * 0.5; this.y += this.speedY; this.wingWing += this.wingSpeed;
+                if (this.x < 0 || this.x > width) this.speedX *= -1; if (this.y < height * 0.5 || this.y > height * 0.95) this.speedY *= -1;
             }
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.fillStyle = this.color;
+                ctx.save(); ctx.translate(this.x, this.y); ctx.fillStyle = this.color;
                 let wingWidth = this.size * Math.abs(Math.sin(this.wingWing));
-                ctx.beginPath();
-                ctx.ellipse(-wingWidth/2, -this.size/2, wingWidth, this.size, 0.5, 0, Math.PI * 2);
-                ctx.ellipse(wingWidth/2, -this.size/2, wingWidth, this.size, -0.5, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.fillStyle = '#fff';
-                ctx.beginPath();
-                ctx.ellipse(0, 0, 1.5, this.size * 0.8, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
+                ctx.beginPath(); ctx.ellipse(-wingWidth/2, -this.size/2, wingWidth, this.size, 0.5, 0, Math.PI * 2);
+                ctx.ellipse(wingWidth/2, -this.size/2, wingWidth, this.size, -0.5, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(0, 0, 1.5, this.size * 0.8, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
             }
         }
         for (let i = 0; i < 6; i++) butterflies.push(new Butterfly());
 
+        // แก้ปัญหาความหน่วง: ลดจำนวนการสร้าง, ปิด ShadowBlur จาก Particle และใช้แสงรวมแทน
         class FireParticle {
             constructor() {
-                this.x = width / 2 + (Math.random() * 140 - 70); 
-                this.y = height / 2 + (Math.random() * 60 - 30);
-                this.size = Math.random() * 25 + 8; 
-                this.speedY = Math.random() * -15 - 5; 
-                this.speedX = Math.random() * 4 - 2;
+                this.x = width / 2 + (Math.random() * 160 - 80); 
+                this.y = height / 2 + (Math.random() * 80 - 20);
+                this.size = Math.random() * 30 + 10; 
+                this.speedY = Math.random() * -12 - 4; 
+                this.speedX = Math.random() * 6 - 3;
                 this.life = 1.0;
-                this.decay = Math.random() * 0.04 + 0.02; 
-                let greenHue = Math.floor(Math.random() * 120 + 80); 
+                this.decay = Math.random() * 0.05 + 0.02; 
+                let greenHue = Math.floor(Math.random() * 100 + 80); 
                 this.color = `rgba(255, ${greenHue}, 0, `;
             }
             update() { 
                 this.y += this.speedY; this.x += this.speedX; this.life -= this.decay; 
-                if (this.size > 0.5) this.size -= 0.4; 
+                if (this.size > 0.5) this.size -= 0.5; 
             }
             draw() {
                 ctx.beginPath(); 
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color + this.life + ')';
-                ctx.shadowBlur = 30; ctx.shadowColor = 'rgba(255, 80, 0, 1)'; 
-                ctx.fill(); ctx.shadowBlur = 0;
+                // ตัด shadowBlur ออกเพื่อแก้ปัญหากระตุก 100%
+                ctx.fill(); 
             }
         }
 
@@ -210,16 +238,16 @@
             butterflies.forEach(bf => { bf.update(); bf.draw(); });
 
             if (animationState === 'burning') {
-                let gradient = ctx.createRadialGradient(width/2, height/2, 10, width/2, height/2, 400);
-                gradient.addColorStop(0, 'rgba(255, 80, 0, 0.4)');
+                // ใช้แสงแบบวงกว้าง (Gradient) แทนการทำ Shadow ทุกเม็ดไฟเพื่อรักษา 60FPS
+                let gradient = ctx.createRadialGradient(width/2, height/2, 10, width/2, height/2, 350);
+                gradient.addColorStop(0, 'rgba(255, 90, 0, 0.6)');
                 gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
                 ctx.fillStyle = gradient;
                 ctx.fillRect(0, 0, width, height);
 
-                // เติมสะเก็ดไฟอย่างต่อเนื่อง
-                for (let i = 0; i < 30; i++) particles.push(new FireParticle());
+                // ปรับลดอัตราการสร้างลงเพื่อให้เบาเครื่อง แต่ปรับขนาดไฟให้ใหญ่ขึ้นเพื่อความอลังการ
+                for (let i = 0; i < 8; i++) particles.push(new FireParticle());
             }
-            // เมื่อสถานะเป็น fading เราจะไม่ push อนุภาคใหม่เข้าไป อนุภาคเดิมจะค่อยๆ มอดดับและหายไปเอง
 
             ctx.globalCompositeOperation = 'lighter';
             for (let i = particles.length - 1; i >= 0; i--) {
@@ -232,43 +260,31 @@
         }
         animationLoop();
 
+        // --- ระบบนำทางหน้าจอ (Flow) ---
         function burnProcess() {
             const angerText = document.getElementById('text-anger');
             if (angerText.value.trim() === '') return;
 
-            // 1. ใบไม้หดตัวและหายไปอย่างรวดเร็ว
             angerText.style.transform = 'scale(0.1) rotate(20deg)';
             angerText.style.opacity = '0';
             
-            setTimeout(() => {
-                document.getElementById('screen-release').classList.add('hidden');
-            }, 400);
+            setTimeout(() => { document.getElementById('screen-release').classList.add('hidden'); }, 400);
 
-            // 2. ปรับฉากหลังมืดและเปิดไฟเผาไหม้
             document.getElementById('bg-image').style.filter = 'brightness(0.2) saturate(0.5)';
             animationState = 'burning';
 
-            // 3. ปล่อยให้ไฟเผา 3.5 วินาที แล้วหยุดเติมไฟ (ให้ไฟค่อยๆ จางมอดลง)
-            setTimeout(() => {
-                animationState = 'fading';
-            }, 3500);
+            setTimeout(() => { animationState = 'fading'; }, 3500);
 
-            // 4. เมื่อเข้าวินาทีที่ 4 (ตอนไฟเริ่มมอด) ให้แสดงข้อความสมาธิ
             setTimeout(() => {
                 const breatheScreen = document.getElementById('screen-breathe');
                 breatheScreen.classList.remove('hidden');
                 breatheScreen.classList.add('fade-in');
             }, 4000);
 
-            // 5. ให้ข้อความค้างไว้ 15 วินาที (รวมกับ 4 วิแรก = 19 วินาที) แล้วไป Stage 2
             setTimeout(() => {
-                // ซ่อนข้อความทำสมาธิ
                 document.getElementById('screen-breathe').classList.add('hidden');
+                document.getElementById('bg-image').style.filter = 'brightness(0.6) saturate(0.7)';
                 
-                // ฉากหลังสว่างขึ้นเหมือนแสงรุ่งสาง
-                document.getElementById('bg-image').style.filter = 'brightness(0.7) saturate(0.8)';
-                
-                // เปิด Stage 2 (Pivot)
                 const pivotScreen = document.getElementById('screen-pivot');
                 pivotScreen.classList.remove('hidden');
                 pivotScreen.classList.add('fade-in');
@@ -276,12 +292,42 @@
         }
 
         function proceedToStage3() {
-            const pivotText = document.getElementById('text-pivot');
-            if (pivotText.value.trim() === '') return;
+            const pivotText = document.getElementById('text-pivot').value;
+            if (pivotText.trim() === '') return;
             
-            alert("พร้อมเข้าสู่ Stage 3: The Bridge (สร้างสะพานความเชื่อ)");
+            // ดึงข้อความเป้าหมายใหม่ไปแสดงใน Stage 3 เพื่อดึงสติ
+            document.getElementById('core-focus-box').innerText = `"${pivotText}"`;
+
+            document.getElementById('screen-pivot').classList.add('hidden');
+            document.getElementById('bg-image').style.filter = 'brightness(0.8) saturate(0.9)';
+            
+            const bridgeScreen = document.getElementById('screen-bridge');
+            bridgeScreen.classList.remove('hidden');
+            bridgeScreen.classList.add('fade-in');
+        }
+
+        function proceedToStage4() {
+            // ตรวจสอบว่าพิมพ์เหตุผลอย่างน้อย 1 ข้อ
+            const inputs = document.querySelectorAll('.focus-input');
+            let hasValue = false;
+            inputs.forEach(input => { if(input.value.trim() !== '') hasValue = true; });
+            
+            if (!hasValue) { alert('กรุณาพิมพ์เหตุผลอย่างน้อย 1 ข้อเพื่อให้ใจคุณเชื่อมั่นขึ้นครับ'); return; }
+
+            document.getElementById('screen-bridge').classList.add('hidden');
+            document.getElementById('bg-image').style.filter = 'brightness(1) saturate(1)';
+
+            const creatorScreen = document.getElementById('screen-creator');
+            creatorScreen.classList.remove('hidden');
+            creatorScreen.classList.add('fade-in');
+        }
+
+        function proceedToStage5() {
+            const creatorText = document.getElementById('text-creator').value;
+            if (creatorText.trim() === '') return;
+            
+            alert("✨ พลังงานของคุณถูกตั้งค่าเรียบร้อยแล้ว!\nรอพบกับความมหัศจรรย์ใน Stage 5 (การผลิบานขั้นสุด) ในการอัปเดตถัดไปครับ");
         }
     </script>
 </body>
 </html>
-
