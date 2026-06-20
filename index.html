@@ -37,7 +37,7 @@
 
         .hidden { display: none !important; opacity: 0; pointer-events: none; }
         
-        .fade-in { animation: fadeIn 1s forwards; }
+        .fade-in { animation: fadeIn 1.5s forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- STAGE 1: ใบไม้สีน้ำตาล --- */
@@ -48,8 +48,7 @@
             padding: 20px; font-size: 16px; color: #fff; line-height: 1.5;
             resize: none; outline: none; box-sizing: border-box;
             box-shadow: 0 8px 20px rgba(0,0,0,0.5); font-family: 'Kanit', sans-serif;
-            transition: all 0.4s ease; /* ปรับให้ใบไม้หดตัวหายไปไวขึ้น */
-            transform-origin: center;
+            transition: all 0.4s ease; transform-origin: center;
         }
         .brown-leaf::placeholder { color: rgba(255,255,255,0.6); font-weight: 300; }
 
@@ -67,15 +66,14 @@
         /* --- ข้อความทำสมาธิ (Meditation Overlay) --- */
         .breathe-text {
             color: #fff; font-size: 26px; font-weight: 400; line-height: 1.6;
-            /* เพิ่มเงาสีดำหนาๆ เพื่อให้ข้อความโดดเด้งออกมาจากกองไฟ */
             text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 0 4px 15px rgba(0,0,0,1);
-            animation: breathePulse 3s infinite ease-in-out;
+            animation: breathePulse 4s infinite ease-in-out; /* ปรับให้เต้นช้าลงตามจังหวะหายใจจริง */
             margin: 0; padding: 20px;
         }
         @keyframes breathePulse {
-            0% { opacity: 0; transform: scale(0.95); }
+            0% { opacity: 0.1; transform: scale(0.95); }
             50% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 0.1; transform: scale(0.95); }
         }
 
         /* --- ปุ่มกด --- */
@@ -103,14 +101,12 @@
     <div class="ui-layer">
         <div class="container" id="ui-box">
             
-            <!-- STAGE 1: Releasing Resistance -->
             <div id="screen-release" class="fade-in">
                 <h3>1. ปลดปล่อยอารมณ์ความรู้สึกด้านแย่ ที่คุณกำลังเป็นอยู่ตอนนี้</h3>
                 <textarea id="text-anger" class="brown-leaf" placeholder="ยอมรับและปลดปล่อย... พิมพ์สิ่งที่คุณรู้สึกติดขัด กังวล หรือสิ่งที่คุณไม่ต้องการในตอนนี้ เพื่อคลายพลังงานด้านลบออกไป"></textarea>
                 <button class="btn btn-burn" onclick="burnProcess()">เผาสลายและส่งต่อให้จักรวาล</button>
             </div>
 
-            <!-- MEDITATION OVERLAY (ระหว่างไฟไหม้) -->
             <div id="screen-breathe" class="hidden">
                 <p class="breathe-text">
                     สูดหายใจเข้าลึกๆ...<br>
@@ -119,7 +115,6 @@
                 </p>
             </div>
 
-            <!-- STAGE 2: The Pivot -->
             <div id="screen-pivot" class="hidden">
                 <h3>2. หมุนทิศทางความคิด (Pivot)</h3>
                 <p class="announce-text">
@@ -139,7 +134,7 @@
         let width, height;
         let particles = [];
         let butterflies = [];
-        let animationState = 'idle';
+        let animationState = 'idle'; // idle, burning, fading
 
         function resize() {
             width = canvas.width = window.innerWidth;
@@ -148,7 +143,6 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // --- ผีเสื้อ ---
         class Butterfly {
             constructor() {
                 this.x = Math.random() * width;
@@ -185,22 +179,21 @@
         }
         for (let i = 0; i < 6; i++) butterflies.push(new Butterfly());
 
-        // --- ไฟเผาไหม้สมจริง (ปรับให้รวดเร็วและรุนแรงขึ้น) ---
         class FireParticle {
             constructor() {
-                this.x = width / 2 + (Math.random() * 140 - 70); // กระจายกว้างขึ้นนิดหน่อย
+                this.x = width / 2 + (Math.random() * 140 - 70); 
                 this.y = height / 2 + (Math.random() * 60 - 30);
-                this.size = Math.random() * 25 + 8; // ขนาดไฟใหญ่ขึ้น
-                this.speedY = Math.random() * -15 - 5; // พุ่งขึ้นไวขึ้นมาก
+                this.size = Math.random() * 25 + 8; 
+                this.speedY = Math.random() * -15 - 5; 
                 this.speedX = Math.random() * 4 - 2;
                 this.life = 1.0;
-                this.decay = Math.random() * 0.04 + 0.02; // มอดดับไวขึ้น
+                this.decay = Math.random() * 0.04 + 0.02; 
                 let greenHue = Math.floor(Math.random() * 120 + 80); 
                 this.color = `rgba(255, ${greenHue}, 0, `;
             }
             update() { 
                 this.y += this.speedY; this.x += this.speedX; this.life -= this.decay; 
-                if (this.size > 0.5) this.size -= 0.4; // ขนาดหดตัวไวขึ้น
+                if (this.size > 0.5) this.size -= 0.4; 
             }
             draw() {
                 ctx.beginPath(); 
@@ -223,9 +216,10 @@
                 ctx.fillStyle = gradient;
                 ctx.fillRect(0, 0, width, height);
 
-                // เพิ่มจำนวนสะเก็ดไฟต่อเฟรมเป็น 30 เพื่อให้ดูเป็นกองไฟลูกใหญ่
+                // เติมสะเก็ดไฟอย่างต่อเนื่อง
                 for (let i = 0; i < 30; i++) particles.push(new FireParticle());
             }
+            // เมื่อสถานะเป็น fading เราจะไม่ push อนุภาคใหม่เข้าไป อนุภาคเดิมจะค่อยๆ มอดดับและหายไปเอง
 
             ctx.globalCompositeOperation = 'lighter';
             for (let i = particles.length - 1; i >= 0; i--) {
@@ -238,7 +232,6 @@
         }
         animationLoop();
 
-        // --- ระบบสลับหน้าจอ ---
         function burnProcess() {
             const angerText = document.getElementById('text-anger');
             if (angerText.value.trim() === '') return;
@@ -247,32 +240,39 @@
             angerText.style.transform = 'scale(0.1) rotate(20deg)';
             angerText.style.opacity = '0';
             
-            // รอแค่ 0.4 วิ แล้วซ่อนหน้าจอ Release ทันที เพื่อหลีกทางให้ข้อความทำสมาธิ
             setTimeout(() => {
                 document.getElementById('screen-release').classList.add('hidden');
-                
-                // เปิดหน้าจอทำสมาธิ
-                const breatheScreen = document.getElementById('screen-breathe');
-                breatheScreen.classList.remove('hidden');
             }, 400);
 
             // 2. ปรับฉากหลังมืดและเปิดไฟเผาไหม้
             document.getElementById('bg-image').style.filter = 'brightness(0.2) saturate(0.5)';
             animationState = 'burning';
 
-            // 3. ลดเวลาเผาไหม้เหลือ 4 วินาที แล้วเข้าสู่ Stage 2
+            // 3. ปล่อยให้ไฟเผา 3.5 วินาที แล้วหยุดเติมไฟ (ให้ไฟค่อยๆ จางมอดลง)
             setTimeout(() => {
-                animationState = 'idle'; // หยุดไฟ
-                document.getElementById('screen-breathe').classList.add('hidden'); // ซ่อนข้อความทำสมาธิ
+                animationState = 'fading';
+            }, 3500);
+
+            // 4. เมื่อเข้าวินาทีที่ 4 (ตอนไฟเริ่มมอด) ให้แสดงข้อความสมาธิ
+            setTimeout(() => {
+                const breatheScreen = document.getElementById('screen-breathe');
+                breatheScreen.classList.remove('hidden');
+                breatheScreen.classList.add('fade-in');
+            }, 4000);
+
+            // 5. ให้ข้อความค้างไว้ 15 วินาที (รวมกับ 4 วิแรก = 19 วินาที) แล้วไป Stage 2
+            setTimeout(() => {
+                // ซ่อนข้อความทำสมาธิ
+                document.getElementById('screen-breathe').classList.add('hidden');
                 
-                // ฉากหลังสว่างขึ้น
+                // ฉากหลังสว่างขึ้นเหมือนแสงรุ่งสาง
                 document.getElementById('bg-image').style.filter = 'brightness(0.7) saturate(0.8)';
                 
-                // เปิด Stage 2
+                // เปิด Stage 2 (Pivot)
                 const pivotScreen = document.getElementById('screen-pivot');
                 pivotScreen.classList.remove('hidden');
                 pivotScreen.classList.add('fade-in');
-            }, 4000);
+            }, 19000);
         }
 
         function proceedToStage3() {
@@ -284,3 +284,4 @@
     </script>
 </body>
 </html>
+
