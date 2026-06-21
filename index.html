@@ -129,8 +129,6 @@
         h3 { color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); margin-top: 0; font-size: 22px; font-weight: 500; }
         .announce-text { color: #fff; font-size: 16px; font-weight: 400; line-height: 1.5; text-shadow: 0 2px 8px rgba(0,0,0,0.8); margin-bottom: 15px; }
         .highlight { color: #FFCA28; font-weight: 600; font-size: 18px; }
-        
-        /* สไตล์พิเศษที่เพิ่มใหม่ */
         .possibility-text { color: #69F0AE; font-weight: 600; font-size: 20px; text-shadow: 0 2px 8px rgba(0,0,0,0.9); }
         .success-title { color: #FFD54F; text-shadow: 0 4px 10px rgba(0,0,0,0.8); font-size: 32px; margin-bottom: 10px;}
         .success-desc { color: #FFF; font-size: 18px; line-height: 1.6; text-shadow: 0 2px 8px rgba(0,0,0,0.8); margin-bottom: 25px; }
@@ -145,14 +143,12 @@
     <div class="ui-layer">
         <div class="container" id="ui-box">
             
-            <!-- STAGE 1: The Release -->
             <div id="screen-release" class="fade-in">
                 <h3>1. ปลดปล่อยอารมณ์ด้านแย่ ที่คุณกำลังเป็นอยู่ตอนนี้</h3>
                 <textarea id="text-anger" class="brown-leaf" placeholder="ยอมรับและปลดปล่อย... พิมพ์สิ่งที่คุณรู้สึกติดขัด เพื่อคลายพลังงานด้านลบออกไป"></textarea>
-                <button class="btn btn-burn" onclick="burnProcess(this)">เผาสลายและส่งต่อให้จักรวาล</button>
+                <button class="btn btn-burn" onclick="burnProcess()">เผาสลายและส่งต่อให้จักรวาล</button>
             </div>
 
-            <!-- MEDITATION OVERLAY -->
             <div id="screen-breathe" class="hidden">
                 <p class="breathe-text">
                     สูดหายใจเข้าลึก ๆ<br>
@@ -161,7 +157,6 @@
                 </p>
             </div>
 
-            <!-- STAGE 2: The Pivot -->
             <div id="screen-pivot" class="hidden">
                 <h3>2. หมุนทิศทางความคิด (Pivot)</h3>
                 <p class="announce-text">
@@ -171,13 +166,11 @@
                 <button class="btn btn-pivot" onclick="proceedToStage3()">ล็อกเป้าหมายใหม่</button>
             </div>
 
-            <!-- STAGE 3: The Bridge -->
             <div id="screen-bridge" class="hidden">
                 <h3>3. สร้างสะพานความเชื่อ (Focus Wheel)</h3>
                 <p class="announce-text">เพื่อดึงดูด <span id="display-core-focus" class="highlight">...</span><br>ให้เหตุผลที่สนับสนุน <span class="possibility-text">"ความเป็นไปได้"</span> นี้</p>
                 <div id="core-focus-box" class="core-focus-display">เป้าหมายของคุณ</div>
                 
-                <!-- ช่องกรอกเหตุผลพร้อมตัวอย่าง -->
                 <input type="text" class="focus-input" placeholder="1. เช่น ฉันเคยผ่านเรื่องที่ยากกว่านี้มาแล้ว...">
                 <input type="text" class="focus-input" placeholder="2. เช่น ฉันมีศักยภาพในการเรียนรู้สิ่งใหม่เสมอ...">
                 <input type="text" class="focus-input" placeholder="3. เช่น ทุกปัญหามีทางออกและฉันจะหามันเจอ...">
@@ -187,7 +180,6 @@
                 <button class="btn btn-bridge" onclick="proceedToStage4()">สร้างความเชื่อมั่น</button>
             </div>
 
-            <!-- STAGE 4: The Creator -->
             <div id="screen-creator" class="hidden">
                 <h3>4. กำหนดพลังงานล่วงหน้า (Pre-paving)</h3>
                 <p class="announce-text">ตอนนี้คุณคือผู้สร้างชีวิตใหม่ ก่อนที่คุณจะปิดหน้าจอนี้ไป คุณตั้งใจจะใช้เวลาต่อจากนี้ เต็มไปด้วยความรู้สึกแบบไหน ?</p>
@@ -195,7 +187,6 @@
                 <button class="btn btn-creator" onclick="proceedToStage5()">ส่งเจตจำนงออกไป</button>
             </div>
 
-            <!-- STAGE 5: The Bloom (Gratitude) -->
             <div id="screen-bloom" class="hidden">
                 <h3>5. การผลิบาน (Gratitude)</h3>
                 <p class="announce-text">เพื่อล็อกคลื่นพลังงานขั้นสูงสุด...<br>จงพิมพ์สิ่งที่คุณรู้สึก "ขอบคุณ" ในชีวิตตอนนี้ 3 อย่าง</p>
@@ -205,7 +196,6 @@
                 <button class="btn btn-bloom" onclick="finishJourney()">เสร็จสิ้นและผลิบาน</button>
             </div>
 
-            <!-- STAGE 6: Success & Celebration -->
             <div id="screen-success" class="hidden">
                 <h2 class="success-title">✨ ยินดีด้วย!</h2>
                 <p class="success-desc">
@@ -228,8 +218,8 @@
         let animationState = 'idle';
 
         function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+            width = canvas.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            height = canvas.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
         }
         window.addEventListener('resize', resize);
         resize();
@@ -247,7 +237,8 @@
             }
             draw() {
                 ctx.save(); ctx.translate(this.x, this.y); ctx.fillStyle = this.color;
-                let wingWidth = this.size * Math.abs(Math.sin(this.wingWing));
+                // ป้องกันปีกผีเสื้อมีค่าเป็น 0 จนเบราว์เซอร์เด้งออก
+                let wingWidth = Math.max(0.1, this.size * Math.abs(Math.sin(this.wingWing)));
                 ctx.beginPath(); ctx.ellipse(-wingWidth/2, -this.size/2, wingWidth, this.size, 0.5, 0, Math.PI * 2);
                 ctx.ellipse(wingWidth/2, -this.size/2, wingWidth, this.size, -0.5, 0, Math.PI * 2); ctx.fill();
                 ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(0, 0, 1.5, this.size * 0.8, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
@@ -269,7 +260,8 @@
             }
             update() { 
                 this.y += this.speedY; this.x += this.speedX; this.life -= this.decay; 
-                if (this.size > 0.5) this.size -= 0.5; 
+                // ป้องกันขนาดของไฟติดลบหรือเป็น 0
+                this.size = Math.max(0.1, this.size - 0.5);
             }
             draw() {
                 ctx.beginPath(); 
@@ -279,7 +271,6 @@
             }
         }
 
-        // --- Class สำหรับสร้างพลุ (Fireworks) ---
         class FireworkParticle {
             constructor(x, y, color) {
                 this.x = x; this.y = y; this.color = color;
@@ -293,8 +284,9 @@
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
-                this.vy += 0.05; // Gravity
+                this.vy += 0.05; 
                 this.life -= this.decay;
+                this.size = Math.max(0.1, this.size);
             }
             draw() {
                 ctx.beginPath();
@@ -330,14 +322,12 @@
                 for (let i = 0; i < 8; i++) particles.push(new FireParticle());
             }
 
-            // เรนเดอร์ไฟ
             ctx.globalCompositeOperation = 'lighter';
             for (let i = particles.length - 1; i >= 0; i--) {
                 particles[i].update(); particles[i].draw();
                 if (particles[i].life <= 0) particles.splice(i, 1);
             }
 
-            // เรนเดอร์พลุเฉลิมฉลอง
             if (animationState === 'celebrating') {
                 if (Math.random() < 0.08) createFireworkExplosion(); 
                 for (let i = fireworks.length - 1; i >= 0; i--) {
@@ -351,17 +341,17 @@
         }
         animationLoop();
 
-        function burnProcess(btn) {
+        function burnProcess() {
             const angerText = document.getElementById('text-anger');
             if (angerText.value.trim() === '') {
                 alert('กรุณาระบายความรู้สึก หรือพิมพ์สิ่งที่คุณติดขัดก่อนกดปุ่มครับ 🍂');
                 return;
             }
 
-            btn.style.pointerEvents = 'none'; // กันการกดซ้ำซ้อน
+            document.querySelector('.btn-burn').style.pointerEvents = 'none'; // ปิดปุ่มชั่วคราว
+            
             angerText.style.transform = 'scale(0.1) rotate(20deg)';
             angerText.style.opacity = '0';
-            
             setTimeout(() => { document.getElementById('screen-release').classList.add('hidden'); }, 400);
 
             document.getElementById('bg-image').style.filter = 'brightness(0.2) saturate(0.5)';
@@ -378,7 +368,6 @@
             setTimeout(() => {
                 document.getElementById('screen-breathe').classList.add('hidden');
                 document.getElementById('bg-image').style.filter = 'brightness(0.6) saturate(0.7)';
-                
                 const pivotScreen = document.getElementById('screen-pivot');
                 pivotScreen.classList.remove('hidden');
                 pivotScreen.classList.add('fade-in');
@@ -407,4 +396,9 @@
             inputs.forEach(input => { if(input.value.trim() !== '') hasValue = true; });
             
             if (!hasValue) { 
-                alert('กรุณาให้เหตุผลอย
+                alert('กรุณาให้เหตุผลอย่างน้อย 1 ข้อ เพื่อเปิดรับความเป็นไปได้ครับ 🌱'); 
+                return; 
+            }
+
+            document.getElementById('screen-bridge').classList.add('hidden');
+            document.g
