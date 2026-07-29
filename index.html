@@ -20,8 +20,7 @@
         }
 
         #effects-canvas {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; z-index: 2; pointer-events: none;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none;
         }
 
         .ui-layer {
@@ -30,105 +29,57 @@
         }
 
         .container {
-            width: 90%; max-width: 450px; text-align: center;
-            background: transparent; padding: 10px;
-            pointer-events: auto; transition: all 1s ease;
+            width: 90%; max-width: 450px; text-align: center; background: transparent; 
+            padding: 10px; pointer-events: auto; transition: all 1s ease;
         }
 
         .hidden { display: none !important; opacity: 0; pointer-events: none; }
-        .fade-in { animation: fadeIn 1s forwards; }
+        .fade-in { animation: fadeIn 0.8s forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- รูปแบบกล่องข้อความ --- */
-        .brown-leaf {
-            width: 100%; height: 150px;
-            background: linear-gradient(135deg, #8B4513, #5C3A21);
-            border: 3px solid #D2B48C; border-radius: 10px 50px 10px 50px;
-            padding: 20px; font-size: 16px; color: #fff; line-height: 1.5;
-            resize: none; outline: none; box-sizing: border-box;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5); font-family: 'Kanit', sans-serif;
-            transition: all 0.4s ease; transform-origin: center;
+        /* --- รูปแบบกล่องข้อความ (MirrorBloom) --- */
+        .brown-leaf, .yellow-leaf, .blue-leaf {
+            width: 100%; padding: 20px; font-size: 16px; line-height: 1.5;
+            resize: none; outline: none; box-sizing: border-box; font-family: 'Kanit', sans-serif;
         }
-        
-        .yellow-leaf {
-            width: 100%; height: 130px;
-            background: linear-gradient(135deg, #FFCA28, #FF8F00);
-            border: 3px solid #FFF3E0; border-radius: 50px 10px 50px 10px;
-            padding: 20px; font-size: 16px; color: #4E342E; line-height: 1.5;
-            resize: none; outline: none; box-sizing: border-box;
-            box-shadow: 0 8px 20px rgba(255,143,0,0.4); font-family: 'Kanit', sans-serif;
-        }
-
-        .blue-leaf {
-            width: 100%; height: 130px;
-            background: linear-gradient(135deg, #4DD0E1, #00838F);
-            border: 3px solid #E0F7FA; border-radius: 10px 50px 10px 50px;
-            padding: 20px; font-size: 16px; color: #FFF; line-height: 1.5;
-            resize: none; outline: none; box-sizing: border-box;
-            box-shadow: 0 8px 20px rgba(0,131,143,0.4); font-family: 'Kanit', sans-serif;
-        }
-
+        .brown-leaf { height: 150px; background: linear-gradient(135deg, #8B4513, #5C3A21); border: 3px solid #D2B48C; border-radius: 10px 50px 10px 50px; color: #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.5); }
+        .yellow-leaf { height: 130px; background: linear-gradient(135deg, #FFCA28, #FF8F00); border: 3px solid #FFF3E0; border-radius: 50px 10px 50px 10px; color: #4E342E; }
+        .blue-leaf { height: 130px; background: linear-gradient(135deg, #4DD0E1, #00838F); border: 3px solid #E0F7FA; border-radius: 10px 50px 10px 50px; color: #FFF; }
         textarea::placeholder, input::placeholder { color: rgba(255,255,255,0.7); font-weight: 300; }
-        .yellow-leaf::placeholder { color: rgba(78,52,46,0.6); }
 
-        /* --- Input สำหรับ Stage 3 (ปรับเป็นสีเขียว) --- */
-        .focus-input {
-            width: 100%; height: 42px; border-radius: 20px;
-            background: rgba(46, 125, 50, 0.3); border: 2px solid #81C784;
-            padding: 10px 20px; margin: 5px 0; color: #FFF;
-            font-family: 'Kanit'; outline: none; box-sizing: border-box;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-        .focus-input:focus { background: rgba(46, 125, 50, 0.6); border-color: #A5D6A7; }
-
-        /* --- Input สำหรับ Stage 5 (สีชมพู/ทอง) --- */
-        .bloom-input {
-            width: 100%; height: 45px; border-radius: 25px;
-            background: rgba(233, 30, 99, 0.2); border: 2px solid #F48FB1;
-            padding: 10px 20px; margin: 6px 0; color: #FFF;
-            font-family: 'Kanit'; outline: none; box-sizing: border-box;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); backdrop-filter: blur(5px);
-        }
-
-        .core-focus-display {
-            background: rgba(255, 202, 40, 0.9); color: #4E342E;
-            padding: 10px; border-radius: 15px; margin-bottom: 12px;
-            font-weight: 500; box-shadow: 0 4px 15px rgba(255,202,40,0.5); font-size: 15px;
-        }
+        .focus-input, .bloom-input { width: 100%; height: 42px; padding: 10px 20px; margin: 5px 0; color: #FFF; font-family: 'Kanit'; outline: none; box-sizing: border-box; backdrop-filter: blur(5px); }
+        .focus-input { border-radius: 20px; background: rgba(46, 125, 50, 0.3); border: 2px solid #81C784; }
+        .bloom-input { border-radius: 25px; background: rgba(233, 30, 99, 0.2); border: 2px solid #F48FB1; height: 45px; }
+        .core-focus-display { background: rgba(255, 202, 40, 0.9); color: #4E342E; padding: 10px; border-radius: 15px; margin-bottom: 12px; font-weight: 500; }
 
         /* --- ข้อความทำสมาธิ --- */
-        .breathe-text {
-            color: #fff; font-size: 26px; font-weight: 400; line-height: 1.6;
-            text-shadow: 0 4px 15px rgba(0,0,0,1);
-            animation: breathePulse 4s infinite ease-in-out; margin: 0; padding: 20px;
-        }
-        @keyframes breathePulse {
-            0% { opacity: 0.1; transform: scale(0.95); }
-            50% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 0.1; transform: scale(0.95); }
-        }
+        .breathe-text { color: #fff; font-size: 26px; text-shadow: 0 4px 15px rgba(0,0,0,1); animation: breathePulse 4s infinite ease-in-out; margin: 0; padding: 20px; }
+        @keyframes breathePulse { 0% { opacity: 0.1; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.1; transform: scale(0.95); } }
 
         /* --- ปุ่มกด --- */
         .btn {
-            margin-top: 15px; padding: 12px 35px; font-size: 16px; font-weight: 600;
+            margin-top: 15px; padding: 12px 35px; font-size: 16px; font-weight: 600; width: 100%;
             border-radius: 30px; cursor: pointer; border: 2px solid #fff; color: white;
-            transition: all 0.2s ease; font-family: 'Kanit', sans-serif; letter-spacing: 0.5px;
+            transition: all 0.2s ease; font-family: 'Kanit', sans-serif; box-sizing: border-box;
         }
-        .btn-burn { background: #ff7f50; box-shadow: 0 6px 0 #d25324; }
-        .btn-burn:active { transform: translateY(6px); box-shadow: 0 0px 0 #d25324; }
-        .btn-pivot { background: #FF8F00; box-shadow: 0 6px 0 #E65100; }
-        .btn-pivot:active { transform: translateY(6px); box-shadow: 0 0px 0 #E65100; }
-        .btn-bridge { background: #4CAF50; box-shadow: 0 6px 0 #2E7D32; }
-        .btn-bridge:active { transform: translateY(6px); box-shadow: 0 0px 0 #2E7D32; }
-        .btn-creator { background: #00ACC1; box-shadow: 0 6px 0 #00838F; }
-        .btn-creator:active { transform: translateY(6px); box-shadow: 0 0px 0 #00838F; }
-        .btn-bloom { background: #E91E63; box-shadow: 0 6px 0 #AD1457; }
-        .btn-bloom:active { transform: translateY(6px); box-shadow: 0 0px 0 #AD1457; }
+        .btn-primary { background: #00ACC1; box-shadow: 0 5px 0 #00838F; }
+        .btn-burn { background: #ff7f50; box-shadow: 0 5px 0 #d25324; }
+        .btn-pivot { background: #FF8F00; box-shadow: 0 5px 0 #E65100; }
+        .btn-bridge { background: #4CAF50; box-shadow: 0 5px 0 #2E7D32; }
+        .btn-bloom { background: #E91E63; box-shadow: 0 5px 0 #AD1457; }
+        .btn:active { transform: translateY(5px); box-shadow: 0 0px 0 transparent !important; }
 
-        h3 { color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); margin-top: 0; font-size: 22px; font-weight: 500; }
-        .announce-text { color: #fff; font-size: 16px; font-weight: 400; line-height: 1.5; text-shadow: 0 2px 8px rgba(0,0,0,0.8); margin-bottom: 15px; }
-        .highlight { color: #FFCA28; font-weight: 600; font-size: 18px; }
+        h3 { color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); margin-top: 0; font-size: 22px; }
+        .announce-text { color: #fff; font-size: 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); margin-bottom: 15px; }
+        .possibility-text { color: #69F0AE; font-weight: 600; font-size: 20px; }
+
+        /* --- UI ระบบสมาชิก (Login/Pricing) --- */
+        .auth-panel { background: rgba(20, 20, 20, 0.85); border: 2px solid #4DD0E1; padding: 30px 20px; border-radius: 20px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .auth-input { width: 100%; height: 45px; border-radius: 10px; background: rgba(255,255,255,0.1); border: 1px solid #FFF; padding: 10px; margin: 8px 0; color: #FFF; font-family: 'Kanit'; text-align: center; box-sizing: border-box; font-size: 16px; }
+        .btn-trial { background: #E91E63; border-color: #F48FB1; box-shadow: 0 5px 0 #AD1457; }
+        .btn-line { background: #00C300; border-color: #FFF; box-shadow: 0 5px 0 #009900; }
+        .btn-outline { background: transparent; color: #FFF; border: 2px solid #FFF; box-shadow: none; }
+        .loading-text { color: #FFF; font-size: 14px; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
@@ -137,30 +88,79 @@
     <canvas id="effects-canvas"></canvas>
 
     <div class="ui-layer">
-        <div class="container" id="ui-box">
+        
+        <!-- ========================================== -->
+        <!-- 1. หน้าเข้าสู่ระบบ (Login Screen) -->
+        <!-- ========================================== -->
+        <div class="container" id="screen-login">
+            <div class="auth-panel fade-in">
+                <h2 style="color: #4DD0E1; margin-top: 0;">MirrorBloom 🌸</h2>
+                <p style="color: #FFF; font-size: 14px; margin-bottom: 20px;">กรุณาระบุตัวตนเพื่อเข้าสู่พื้นที่ยกระดับพลังงานของคุณ</p>
+                
+                <input type="text" id="input-name" class="auth-input" placeholder="ชื่อของคุณ / โปรไฟล์">
+                <input type="email" id="input-email" class="auth-input" placeholder="อีเมลของคุณ">
+                
+                <button class="btn btn-primary" id="btn-login" onclick="handleLogin()">เข้าสู่ระบบ</button>
+                <p id="login-loading" class="loading-text">กำลังตรวจสอบข้อมูล...</p>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 2. หน้าเลือกแพ็กเกจ (Pricing Screen) -->
+        <!-- ========================================== -->
+        <div class="container hidden" id="screen-pricing">
+            <div class="auth-panel fade-in" style="border-color: #FFD54F;">
+                <h2 style="color: #FFD54F; margin-top: 0;">เลือกแพ็กเกจ 👑</h2>
+                <p style="color: #FFF; font-size: 14px; margin-bottom: 20px;" id="pricing-message">เพื่อความต่อเนื่องในการสร้างคลื่นพลังงานบวก</p>
+                
+                <!-- ปุ่มนี้จะหายไปถ้าเคยทดลองใช้แล้ว -->
+                <button class="btn btn-trial" id="btn-free-trial" onclick="startTrial()">✨ ทดลองใช้ฟรี 7 วัน</button>
+                
+                <button class="btn btn-line" onclick="window.open('https://line.me/R/ti/p/@your_line_id', '_blank')">รายเดือน 199 บาท (สมัครผ่าน LINE)</button>
+                <button class="btn btn-line" onclick="window.open('https://line.me/R/ti/p/@your_line_id', '_blank')">รายปี 1,599 บาท (สมัครผ่าน LINE)</button>
+                <button class="btn btn-outline" style="margin-top: 20px;" onclick="showKeyScreen()">🔑 ฉันมี Serial Key แล้ว</button>
+                
+                <p id="pricing-loading" class="loading-text">กำลังดำเนินการ...</p>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 3. หน้ากรอกรหัส Premium (Key Screen) -->
+        <!-- ========================================== -->
+        <div class="container hidden" id="screen-key">
+            <div class="auth-panel fade-in" style="border-color: #69F0AE;">
+                <h3 style="color: #69F0AE; margin-top: 0;">ปลดล็อก Premium 🌟</h3>
+                <p style="color: #FFF; font-size: 14px;">(ระบบจำอีเมลของคุณไว้แล้ว กรอกแค่รหัส)</p>
+                
+                <input type="text" id="input-key" class="auth-input" placeholder="กรอก Serial Key (เช่น MB-XXXX)">
+                
+                <button class="btn btn-bridge" id="btn-verify" onclick="verifyKey()">ยืนยันการปลดล็อก</button>
+                <button class="btn btn-outline" onclick="backToPricing()">⬅ ย้อนกลับ</button>
+                <p id="key-loading" class="loading-text">กำลังตรวจสอบรหัส...</p>
+            </div>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- 4. ตัวแอปหลัก (MirrorBloom App) -->
+        <!-- ========================================== -->
+        <div class="container hidden" id="ui-box">
             
             <!-- STAGE 1: The Release -->
             <div id="screen-release" class="fade-in">
                 <h3>1. ปลดปล่อยอารมณ์ด้านแย่ ที่คุณกำลังเป็นอยู่ตอนนี้</h3>
-                <textarea id="text-anger" class="brown-leaf" placeholder="ยอมรับและปลดปล่อย... พิมพ์สิ่งที่คุณรู้สึกติดขัด เพื่อคลายพลังงานด้านลบออกไป"></textarea>
+                <textarea id="text-anger" class="brown-leaf" placeholder="ยอมรับและปลดปล่อย... พิมพ์สิ่งที่คุณรู้สึกติดขัด"></textarea>
                 <button class="btn btn-burn" onclick="burnProcess()">เผาสลายและส่งต่อให้จักรวาล</button>
             </div>
 
-            <!-- MEDITATION OVERLAY -->
             <div id="screen-breathe" class="hidden">
-                <p class="breathe-text">
-                    สูดหายใจเข้าลึก ๆ<br>
-                    ตอนนี้คุณได้ปลดปล่อย<br>
-                    สิ่งที่ฉุดรั้งคุณไปแล้ว
-                </p>
+                <p class="breathe-text">สูดหายใจเข้าลึก ๆ<br>ตอนนี้คุณได้ปลดปล่อย<br>สิ่งที่ฉุดรั้งคุณไปแล้ว</p>
             </div>
 
             <!-- STAGE 2: The Pivot -->
             <div id="screen-pivot" class="hidden">
                 <h3>2. หมุนทิศทางความคิด (Pivot)</h3>
-                <p class="announce-text">
-                    แล้วตอนนี้ คุณ <span class="highlight">"ต้องการที่จะทำ"</span> อะไร ?
-                </p>
+                <p class="announce-text">แล้วตอนนี้ คุณ <span class="highlight">"ต้องการที่จะทำ"</span> อะไร ?</p>
                 <textarea id="text-pivot" class="yellow-leaf" placeholder="พิมพ์ความปรารถนาของคุณ..."></textarea>
                 <button class="btn btn-pivot" onclick="proceedToStage3()">ล็อกเป้าหมายใหม่</button>
             </div>
@@ -168,54 +168,179 @@
             <!-- STAGE 3: The Bridge -->
             <div id="screen-bridge" class="hidden">
                 <h3>3. สร้างสะพานความเชื่อ (Focus Wheel)</h3>
-                <p class="announce-text">เพื่อดึงดูด <span id="display-core-focus" class="highlight">...</span><br>ให้เหตุผลที่สนับสนุนความเป็นไปได้นี้</p>
-                <div id="core-focus-box" class="core-focus-display">เป้าหมายของคุณ</div>
-                
-                <!-- เปลี่ยนเป็น 5 ช่อง และดีไซน์สีเขียว -->
-                <input type="text" class="focus-input" placeholder="เหตุผลที่ 1 ...">
-                <input type="text" class="focus-input" placeholder="เหตุผลที่ 2 ...">
-                <input type="text" class="focus-input" placeholder="เหตุผลที่ 3 ...">
-                <input type="text" class="focus-input" placeholder="เหตุผลที่ 4 ...">
-                <input type="text" class="focus-input" placeholder="เหตุผลที่ 5 ...">
-                
+                <p class="announce-text">ให้เหตุผลที่สนับสนุน <span class="possibility-text">"ความเป็นไปได้"</span> นี้</p>
+                <div id="core-focus-box" class="core-focus-display">...</div>
+                <input type="text" class="focus-input" placeholder="1. เช่น ฉันเคยผ่านเรื่องที่ยากกว่านี้มาแล้ว...">
+                <input type="text" class="focus-input" placeholder="2. เช่น ฉันมีศักยภาพในการเรียนรู้สิ่งใหม่เสมอ...">
+                <input type="text" class="focus-input" placeholder="3. เช่น ทุกปัญหามีทางออกและฉันจะหามันเจอ...">
+                <input type="text" class="focus-input" placeholder="4. เช่น มีผู้คนมากมายที่พร้อมจะช่วยเหลือฉัน...">
+                <input type="text" class="focus-input" placeholder="5. เช่น จักรวาลพร้อมสนับสนุนคนที่มีความตั้งใจ...">
                 <button class="btn btn-bridge" onclick="proceedToStage4()">สร้างความเชื่อมั่น</button>
             </div>
 
             <!-- STAGE 4: The Creator -->
             <div id="screen-creator" class="hidden">
                 <h3>4. กำหนดพลังงานล่วงหน้า (Pre-paving)</h3>
-                <p class="announce-text">ตอนนี้คุณคือผู้สร้างชีวิตใหม่ ก่อนที่คุณจะปิดหน้าจอนี้ไป คุณตั้งใจจะใช้เวลาต่อจากนี้ เต็มไปด้วยความรู้สึกแบบไหน ?</p>
-                <textarea id="text-creator" class="blue-leaf" placeholder="พิมพ์เจตจำนงของคุณ... (เช่น ฉันตั้งใจว่าวันนี้ฉันจะยิ้มให้ตัวเองและดึงดูดแต่สิ่งดีๆ)"></textarea>
+                <p class="announce-text">ก่อนที่คุณจะปิดหน้าจอนี้ไป คุณตั้งใจจะใช้เวลาต่อจากนี้ เต็มไปด้วยความรู้สึกแบบไหน ?</p>
+                <textarea id="text-creator" class="blue-leaf" placeholder="พิมพ์เจตจำนงของคุณ..."></textarea>
                 <button class="btn btn-creator" onclick="proceedToStage5()">ส่งเจตจำนงออกไป</button>
             </div>
 
             <!-- STAGE 5: The Bloom (Gratitude) -->
             <div id="screen-bloom" class="hidden">
                 <h3>5. การผลิบาน (Gratitude)</h3>
-                <p class="announce-text">เพื่อล็อกคลื่นพลังงานขั้นสูงสุด...<br>จงพิมพ์สิ่งที่คุณรู้สึก "ขอบคุณ" ในชีวิตตอนนี้ 3 อย่าง</p>
+                <p class="announce-text">พิมพ์สิ่งที่คุณรู้สึก "ขอบคุณ" ในชีวิตตอนนี้ 3 อย่าง</p>
                 <input type="text" class="bloom-input" placeholder="1. ฉันขอบคุณ...">
                 <input type="text" class="bloom-input" placeholder="2. ฉันขอบคุณ...">
                 <input type="text" class="bloom-input" placeholder="3. ฉันขอบคุณ...">
                 <button class="btn btn-bloom" onclick="finishJourney()">เสร็จสิ้นและผลิบาน</button>
             </div>
 
+            <div id="screen-success" class="hidden">
+                <h2 class="success-title">✨ ยินดีด้วย!</h2>
+                <p class="success-desc">คุณได้ปลดล็อกและยกระดับคลื่นพลังงานสำเร็จแล้ว</p>
+                <button class="btn btn-bloom" onclick="location.reload()" style="background: rgba(255,255,255,0.2); border-color: #fff;">เริ่มต้นใหม่</button>
+            </div>
         </div>
+
     </div>
 
     <script>
+        // ==========================================
+        // ตั้งค่า URL ของระบบหลังบ้าน (Apps Script)
+        // ==========================================
+        const SCRIPT_URL = 'วาง_URL_ของ_WEB_APP_ตรงนี้'; // <--- แก้ไขตรงนี้ครับ ⭐⭐⭐
+
+        // ตัวแปรเก็บข้อมูลผู้ใช้ชั่วคราว
+        let currentUserEmail = "";
+        let currentUserName = "";
+
+        // ==========================================
+        // ระบบ Authentication (เข้าสู่ระบบ & ตรวจสอบ)
+        // ==========================================
+        async function handleLogin() {
+            const name = document.getElementById('input-name').value.trim();
+            const email = document.getElementById('input-email').value.trim();
+            if(!name || !email) return alert("กรุณากรอกชื่อและอีเมลให้ครบถ้วนครับ");
+
+            document.getElementById('btn-login').style.display = 'none';
+            document.getElementById('login-loading').style.display = 'block';
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "login", email: email }),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+
+                currentUserEmail = email;
+                currentUserName = name;
+
+                document.getElementById('screen-login').classList.add('hidden');
+
+                if (result.isNew) {
+                    // คนใหม่ -> ไปหน้าเลือกแพ็กเกจ (มีปุ่มทดลองฟรี)
+                    document.getElementById('screen-pricing').classList.remove('hidden');
+                } else {
+                    // คนเก่า -> เช็คว่าหมดอายุไหม
+                    if (result.isExpired) {
+                        // หมดอายุแล้ว -> ซ่อนปุ่ม 7 วัน, แสดงเฉพาะช่องทางจ่ายเงิน
+                        document.getElementById('btn-free-trial').style.display = 'none';
+                        document.getElementById('pricing-message').innerText = "แพ็กเกจของคุณหมดอายุแล้ว กรุณาต่ออายุเพื่อใช้งานต่อครับ";
+                        document.getElementById('screen-pricing').classList.remove('hidden');
+                    } else {
+                        // ยังไม่หมดอายุ (ยังอยู่ในช่วง 7 วัน หรือ ซื้อรายเดือนแล้ว) -> เข้าแอปเลย
+                        startApp();
+                    }
+                }
+            } catch (err) {
+                alert("เชื่อมต่อไม่สำเร็จ กรุณาลองใหม่ครับ");
+                document.getElementById('btn-login').style.display = 'block';
+                document.getElementById('login-loading').style.display = 'none';
+            }
+        }
+
+        async function startTrial() {
+            document.getElementById('btn-free-trial').style.display = 'none';
+            document.getElementById('pricing-loading').style.display = 'block';
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "start_trial", email: currentUserEmail, name: currentUserName }),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+                
+                if(result.success) {
+                    document.getElementById('screen-pricing').classList.add('hidden');
+                    startApp(); // เข้าใช้งานแอป
+                }
+            } catch (err) {
+                alert("เกิดข้อผิดพลาด ลองใหม่อีกครั้งครับ");
+                document.getElementById('btn-free-trial').style.display = 'block';
+                document.getElementById('pricing-loading').style.display = 'none';
+            }
+        }
+
+        function showKeyScreen() {
+            document.getElementById('screen-pricing').classList.add('hidden');
+            document.getElementById('screen-key').classList.remove('hidden');
+        }
+        function backToPricing() {
+            document.getElementById('screen-key').classList.add('hidden');
+            document.getElementById('screen-pricing').classList.remove('hidden');
+        }
+
+        async function verifyKey() {
+            const key = document.getElementById('input-key').value.trim();
+            if(!key) return alert("กรุณากรอก Serial Key ครับ");
+
+            document.getElementById('btn-verify').style.display = 'none';
+            document.getElementById('key-loading').style.display = 'block';
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({ action: "verify_key", email: currentUserEmail, key: key }),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                const result = await response.json();
+
+                if(result.success) {
+                    alert(result.message);
+                    document.getElementById('screen-key').classList.add('hidden');
+                    startApp(); // เข้าใช้งานแอป
+                } else {
+                    alert(result.message);
+                    document.getElementById('btn-verify').style.display = 'block';
+                    document.getElementById('key-loading').style.display = 'none';
+                }
+            } catch (err) {
+                alert("เกิดข้อผิดพลาด ลองใหม่อีกครั้งครับ");
+                document.getElementById('btn-verify').style.display = 'block';
+                document.getElementById('key-loading').style.display = 'none';
+            }
+        }
+
+        function startApp() {
+            // เปิดให้แสดงตัวแอป
+            document.getElementById('ui-box').classList.remove('hidden');
+        }
+
+        // ==========================================
+        // ระบบกราฟิก (Canvas Safe Mode)
+        // ==========================================
         const canvas = document.getElementById('effects-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
-        let particles = [];
-        let butterflies = [];
+        let particles = [], butterflies = [], fireworks = [];
         let animationState = 'idle';
+        let isProcessing = false;
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
 
         class Butterfly {
             constructor() {
@@ -230,147 +355,135 @@
             }
             draw() {
                 ctx.save(); ctx.translate(this.x, this.y); ctx.fillStyle = this.color;
-                let wingWidth = this.size * Math.abs(Math.sin(this.wingWing));
-                ctx.beginPath(); ctx.ellipse(-wingWidth/2, -this.size/2, wingWidth, this.size, 0.5, 0, Math.PI * 2);
-                ctx.ellipse(wingWidth/2, -this.size/2, wingWidth, this.size, -0.5, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.ellipse(0, 0, 1.5, this.size * 0.8, 0, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+                let wingWidth = Math.max(0.1, this.size * Math.abs(Math.sin(this.wingWing)));
+                ctx.save(); ctx.translate(-wingWidth/2, 0); ctx.scale(wingWidth, this.size); ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+                ctx.save(); ctx.translate(wingWidth/2, 0); ctx.scale(wingWidth, this.size); ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+                ctx.fillStyle = '#fff'; ctx.save(); ctx.scale(1.5, this.size * 0.8); ctx.beginPath(); ctx.arc(0, 0, 1, 0, Math.PI * 2); ctx.fill(); ctx.restore(); ctx.restore();
             }
         }
-        for (let i = 0; i < 6; i++) butterflies.push(new Butterfly());
 
         class FireParticle {
             constructor() {
-                this.x = width / 2 + (Math.random() * 160 - 80); 
-                this.y = height / 2 + (Math.random() * 80 - 20);
-                this.size = Math.random() * 30 + 10; 
-                this.speedY = Math.random() * -12 - 4; 
-                this.speedX = Math.random() * 6 - 3;
-                this.life = 1.0;
-                this.decay = Math.random() * 0.05 + 0.02; 
-                let greenHue = Math.floor(Math.random() * 100 + 80); 
-                this.color = `rgba(255, ${greenHue}, 0, `;
+                this.x = width / 2 + (Math.random() * 160 - 80); this.y = height / 2 + (Math.random() * 80 - 20);
+                this.size = Math.random() * 30 + 10; this.speedY = Math.random() * -12 - 4; this.speedX = Math.random() * 6 - 3;
+                this.life = 1.0; this.decay = Math.random() * 0.05 + 0.02; this.color = `rgba(255, ${Math.floor(Math.random() * 100 + 80)}, 0, `;
             }
-            update() { 
-                this.y += this.speedY; this.x += this.speedX; this.life -= this.decay; 
-                if (this.size > 0.5) this.size -= 0.5; 
+            update() { this.y += this.speedY; this.x += this.speedX; this.life -= this.decay; this.size = Math.max(0.1, this.size - 0.5); }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.color + Math.max(0, this.life).toFixed(2) + ')'; ctx.fill(); }
+        }
+
+        class FireworkParticle {
+            constructor(x, y, color) {
+                this.x = x; this.y = y; this.color = color; let angle = Math.random() * Math.PI * 2; let speed = Math.random() * 6 + 2;
+                this.vx = Math.cos(angle) * speed; this.vy = Math.sin(angle) * speed; this.life = 1.0; this.decay = Math.random() * 0.02 + 0.01; this.size = Math.random() * 3 + 1.5;
             }
-            draw() {
-                ctx.beginPath(); 
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color + this.life + ')';
-                ctx.fill(); 
-            }
+            update() { this.x += this.vx; this.y += this.vy; this.vy += 0.05; this.life -= this.decay; this.size = Math.max(0.1, this.size); }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.color.replace('rgb', 'rgba').replace(')', `, ${Math.max(0, this.life).toFixed(2)})`); ctx.fill(); }
+        }
+
+        function createFireworkExplosion() {
+            let x = Math.random() * (width - 100) + 50; let y = Math.random() * (height / 2); 
+            let colors = ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 206, 86)', 'rgb(105, 240, 174)', 'rgb(233, 30, 99)'];
+            let color = colors[Math.floor(Math.random() * colors.length)];
+            for(let i = 0; i < 60; i++) fireworks.push(new FireworkParticle(x, y, color));
         }
 
         function animationLoop() {
             ctx.clearRect(0, 0, width, height);
-
             butterflies.forEach(bf => { bf.update(); bf.draw(); });
 
             if (animationState === 'burning') {
                 let gradient = ctx.createRadialGradient(width/2, height/2, 10, width/2, height/2, 350);
-                gradient.addColorStop(0, 'rgba(255, 90, 0, 0.6)');
-                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, width, height);
-
+                gradient.addColorStop(0, 'rgba(255, 90, 0, 0.6)'); gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = gradient; ctx.fillRect(0, 0, width, height);
                 for (let i = 0; i < 8; i++) particles.push(new FireParticle());
             }
 
             ctx.globalCompositeOperation = 'lighter';
             for (let i = particles.length - 1; i >= 0; i--) {
-                particles[i].update(); particles[i].draw();
-                if (particles[i].life <= 0) particles.splice(i, 1);
+                particles[i].update(); particles[i].draw(); if (particles[i].life <= 0) particles.splice(i, 1);
             }
-            ctx.globalCompositeOperation = 'source-over'; 
 
-            requestAnimationFrame(animationLoop);
+            if (animationState === 'celebrating') {
+                if (Math.random() < 0.08) createFireworkExplosion(); 
+                for (let i = fireworks.length - 1; i >= 0; i--) {
+                    fireworks[i].update(); fireworks[i].draw(); if (fireworks[i].life <= 0) fireworks.splice(i, 1);
+                }
+            }
+            ctx.globalCompositeOperation = 'source-over'; requestAnimationFrame(animationLoop);
         }
+
+        for (let i = 0; i < 6; i++) butterflies.push(new Butterfly());
         animationLoop();
 
+        // ==========================================
+        // ระบบ Flow แอปพลิเคชัน (MirrorBloom)
+        // ==========================================
         function burnProcess() {
+            if (isProcessing) return;
             const angerText = document.getElementById('text-anger');
-            if (angerText.value.trim() === '') return;
+            if (angerText.value.trim() === '') return alert('กรุณาระบายความรู้สึกก่อนไปต่อครับ 🍂');
 
-            angerText.style.transform = 'scale(0.1) rotate(20deg)';
-            angerText.style.opacity = '0';
-            
+            isProcessing = true;
+            angerText.style.transform = 'scale(0.1) rotate(20deg)'; angerText.style.opacity = '0';
             setTimeout(() => { document.getElementById('screen-release').classList.add('hidden'); }, 400);
 
             document.getElementById('bg-image').style.filter = 'brightness(0.2) saturate(0.5)';
             animationState = 'burning';
 
             setTimeout(() => { animationState = 'fading'; }, 3500);
-
             setTimeout(() => {
                 const breatheScreen = document.getElementById('screen-breathe');
-                breatheScreen.classList.remove('hidden');
-                breatheScreen.classList.add('fade-in');
+                breatheScreen.classList.remove('hidden'); breatheScreen.classList.add('fade-in');
             }, 4000);
 
             setTimeout(() => {
                 document.getElementById('screen-breathe').classList.add('hidden');
                 document.getElementById('bg-image').style.filter = 'brightness(0.6) saturate(0.7)';
-                
                 const pivotScreen = document.getElementById('screen-pivot');
-                pivotScreen.classList.remove('hidden');
-                pivotScreen.classList.add('fade-in');
+                pivotScreen.classList.remove('hidden'); pivotScreen.classList.add('fade-in');
+                isProcessing = false; 
             }, 19000);
         }
 
         function proceedToStage3() {
             const pivotText = document.getElementById('text-pivot').value;
-            if (pivotText.trim() === '') return;
-            
+            if (pivotText.trim() === '') return alert('กรุณาพิมพ์สิ่งที่คุณ "ต้องการทำ" ก่อนไปต่อครับ ✨');
             document.getElementById('core-focus-box').innerText = `"${pivotText}"`;
             document.getElementById('screen-pivot').classList.add('hidden');
             document.getElementById('bg-image').style.filter = 'brightness(0.8) saturate(0.9)';
-            
             const bridgeScreen = document.getElementById('screen-bridge');
-            bridgeScreen.classList.remove('hidden');
-            bridgeScreen.classList.add('fade-in');
+            bridgeScreen.classList.remove('hidden'); bridgeScreen.classList.add('fade-in');
         }
 
         function proceedToStage4() {
-            const inputs = document.querySelectorAll('.focus-input');
-            let hasValue = false;
+            const inputs = document.querySelectorAll('.focus-input'); let hasValue = false;
             inputs.forEach(input => { if(input.value.trim() !== '') hasValue = true; });
-            
-            if (!hasValue) { alert('กรุณาพิมพ์เหตุผลอย่างน้อย 1 ข้อเพื่อให้ใจคุณเชื่อมั่นขึ้นครับ'); return; }
-
+            if (!hasValue) return alert('กรุณาให้เหตุผลอย่างน้อย 1 ข้อครับ 🌱'); 
             document.getElementById('screen-bridge').classList.add('hidden');
             document.getElementById('bg-image').style.filter = 'brightness(1) saturate(1)';
-
             const creatorScreen = document.getElementById('screen-creator');
-            creatorScreen.classList.remove('hidden');
-            creatorScreen.classList.add('fade-in');
+            creatorScreen.classList.remove('hidden'); creatorScreen.classList.add('fade-in');
         }
 
         function proceedToStage5() {
             const creatorText = document.getElementById('text-creator').value;
-            if (creatorText.trim() === '') return;
-
+            if (creatorText.trim() === '') return alert('กรุณากำหนดเจตจำนงของคุณครับ 💫');
             document.getElementById('screen-creator').classList.add('hidden');
-            
-            // ทำให้ภาพพื้นหลังสว่างและสีสดใสที่สุด เพื่อแสดงถึงการเบิกบาน
             document.getElementById('bg-image').style.filter = 'brightness(1.1) saturate(1.3) contrast(1.1)';
-
             const bloomScreen = document.getElementById('screen-bloom');
-            bloomScreen.classList.remove('hidden');
-            bloomScreen.classList.add('fade-in');
+            bloomScreen.classList.remove('hidden'); bloomScreen.classList.add('fade-in');
         }
 
         function finishJourney() {
-            const inputs = document.querySelectorAll('.bloom-input');
-            let hasValue = false;
+            const inputs = document.querySelectorAll('.bloom-input'); let hasValue = false;
             inputs.forEach(input => { if(input.value.trim() !== '') hasValue = true; });
-
-            if (!hasValue) { alert('การพิมพ์สิ่งที่คุณรู้สึกขอบคุณ แม้เพียงเล็กน้อย จะช่วยล็อกพลังงานดีๆ ไว้กับคุณได้ครับ'); return; }
-
-            alert("✨ ยินดีด้วย! คุณได้ปลดล็อกและยกระดับคลื่นพลังงานของตัวเองสำเร็จแล้ว\nขอให้วันนี้เป็นวันที่ดีที่สุดของคุณครับ");
-            location.reload(); // โหลดหน้าใหม่เพื่อเริ่มต้นใหม่
+            if (!hasValue) return alert('ขอบคุณแม้เพียงสิ่งเล็กน้อย จะล็อกพลังงานดีๆ ไว้ได้ครับ 💖'); 
+            document.getElementById('screen-bloom').classList.add('hidden');
+            const successScreen = document.getElementById('screen-success');
+            successScreen.classList.remove('hidden'); successScreen.classList.add('fade-in');
+            animationState = 'celebrating'; 
         }
     </script>
 </body>
 </html>
-
