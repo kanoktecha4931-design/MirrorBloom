@@ -113,11 +113,13 @@
                 <h2 style="color: #FFD54F; margin-top: 0;">เลือกแพ็กเกจ 👑</h2>
                 <p style="color: #FFF; font-size: 14px; margin-bottom: 20px;" id="pricing-message">เพื่อความต่อเนื่องในการสร้างคลื่นพลังงานบวก</p>
                 
-                <!-- ปุ่มนี้จะหายไปถ้าเคยทดลองใช้แล้ว -->
+                <!-- ปุ่มทดลองใช้ฟรี (จะซ่อนอัตโนมัติถ้าเคยใช้แล้ว) -->
                 <button class="btn btn-trial" id="btn-free-trial" onclick="startTrial()">✨ ทดลองใช้ฟรี 7 วัน</button>
                 
-                <button class="btn btn-line" onclick="window.open('https://line.me/R/ti/p/@richeecohub?text=สนใจสมัครแพ็กเกจรายเดือน', '_blank')">รายเดือน 199 บาท (สมัครผ่าน LINE)</button>
-                <button class="btn btn-line" onclick="window.open('https://line.me/R/ti/p/@richeecohub?text=สนใจสมัครแพ็กเกจรายปี', '_blank')">รายปี 1,599 บาท (สมัครผ่าน LINE)</button>
+                <!-- ปุ่มชำระเงินผ่าน LINE OA (แก้ไขให้ลิงก์ตรงด้วย location.href) -->
+                <button class="btn btn-line" onclick="location.href='https://line.me/R/ti/p/@richieecohub'">รายเดือน 199 บาท (สมัครผ่าน LINE)</button>
+                <button class="btn btn-line" onclick="location.href='https://line.me/R/ti/p/@richieecohub'">รายปี 1,599 บาท (สมัครผ่าน LINE)</button>
+                
                 <button class="btn btn-outline" style="margin-top: 20px;" onclick="showKeyScreen()">🔑 ฉันมี Serial Key แล้ว</button>
                 
                 <p id="pricing-loading" class="loading-text">กำลังดำเนินการ...</p>
@@ -209,9 +211,8 @@
         // ==========================================
         // ตั้งค่า URL ของระบบหลังบ้าน (Apps Script)
         // ==========================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXNsIgbsuTdQ0bIlKENKdmRjQiksDCP7p-9YrtDL2ayUHmpizCasVNAshZKRREePNzhg/exec'; // <--- แก้ไขตรงนี้ครับ ⭐⭐⭐
+        const SCRIPT_URL = 'วาง_URL_ของ_WEB_APP_ตรงนี้'; // <--- แทนที่ด้วย URL ของคุณ
 
-        // ตัวแปรเก็บข้อมูลผู้ใช้ชั่วคราว
         let currentUserEmail = "";
         let currentUserName = "";
 
@@ -240,17 +241,13 @@
                 document.getElementById('screen-login').classList.add('hidden');
 
                 if (result.isNew) {
-                    // คนใหม่ -> ไปหน้าเลือกแพ็กเกจ (มีปุ่มทดลองฟรี)
                     document.getElementById('screen-pricing').classList.remove('hidden');
                 } else {
-                    // คนเก่า -> เช็คว่าหมดอายุไหม
                     if (result.isExpired) {
-                        // หมดอายุแล้ว -> ซ่อนปุ่ม 7 วัน, แสดงเฉพาะช่องทางจ่ายเงิน
                         document.getElementById('btn-free-trial').style.display = 'none';
                         document.getElementById('pricing-message').innerText = "แพ็กเกจของคุณหมดอายุแล้ว กรุณาต่ออายุเพื่อใช้งานต่อครับ";
                         document.getElementById('screen-pricing').classList.remove('hidden');
                     } else {
-                        // ยังไม่หมดอายุ (ยังอยู่ในช่วง 7 วัน หรือ ซื้อรายเดือนแล้ว) -> เข้าแอปเลย
                         startApp();
                     }
                 }
@@ -275,7 +272,7 @@
                 
                 if(result.success) {
                     document.getElementById('screen-pricing').classList.add('hidden');
-                    startApp(); // เข้าใช้งานแอป
+                    startApp();
                 }
             } catch (err) {
                 alert("เกิดข้อผิดพลาด ลองใหม่อีกครั้งครับ");
@@ -311,7 +308,7 @@
                 if(result.success) {
                     alert(result.message);
                     document.getElementById('screen-key').classList.add('hidden');
-                    startApp(); // เข้าใช้งานแอป
+                    startApp();
                 } else {
                     alert(result.message);
                     document.getElementById('btn-verify').style.display = 'block';
@@ -325,7 +322,6 @@
         }
 
         function startApp() {
-            // เปิดให้แสดงตัวแอป
             document.getElementById('ui-box').classList.remove('hidden');
         }
 
