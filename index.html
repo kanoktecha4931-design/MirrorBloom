@@ -340,7 +340,7 @@
             let statusText = (userStatusType === "renewal") ? "ต่ออายุสมาชิก" : "สมัครใหม่";
             let message = `แจ้งชำระเงินแพ็กเกจ${selectedPlanName} (${statusText})%0A- ชื่อ: ${currentUserName}%0A- อีเมล: ${currentUserEmail}%0A(แนบสลิปการโอนเงินด้านล่างนี้ได้เลยค่ะ)`;
             
-            let lineUrl = `https://line.me/R/ti/p/${@richieecohub}?text=${message}`;
+            let lineUrl = `https://line.me/R/ti/p/${LINE_ID}?text=${message}`;
             location.href = lineUrl;
         }
 
