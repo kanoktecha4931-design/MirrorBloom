@@ -73,13 +73,15 @@
         .announce-text { color: #fff; font-size: 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); margin-bottom: 15px; }
         .possibility-text { color: #69F0AE; font-weight: 600; font-size: 20px; }
 
-        /* --- UI ระบบสมาชิก (Login/Pricing) --- */
-        .auth-panel { background: rgba(20, 20, 20, 0.85); border: 2px solid #4DD0E1; padding: 30px 20px; border-radius: 20px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        /* --- UI ระบบสมาชิก (Login/Pricing/QR) --- */
+        .auth-panel { background: rgba(20, 20, 20, 0.9); border: 2px solid #4DD0E1; padding: 25px 20px; border-radius: 20px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
         .auth-input { width: 100%; height: 45px; border-radius: 10px; background: rgba(255,255,255,0.1); border: 1px solid #FFF; padding: 10px; margin: 8px 0; color: #FFF; font-family: 'Kanit'; text-align: center; box-sizing: border-box; font-size: 16px; }
         .btn-trial { background: #E91E63; border-color: #F48FB1; box-shadow: 0 5px 0 #AD1457; }
         .btn-line { background: #00C300; border-color: #FFF; box-shadow: 0 5px 0 #009900; }
         .btn-outline { background: transparent; color: #FFF; border: 2px solid #FFF; box-shadow: none; }
         .loading-text { color: #FFF; font-size: 14px; margin-top: 10px; display: none; }
+        .qr-box { background: #fff; padding: 15px; border-radius: 15px; display: inline-block; margin: 10px 0; }
+        .qr-box img { width: 180px; height: 180px; object-fit: contain; }
     </style>
 </head>
 <body>
@@ -111,23 +113,43 @@
         <div class="container hidden" id="screen-pricing">
             <div class="auth-panel fade-in" style="border-color: #FFD54F;">
                 <h2 style="color: #FFD54F; margin-top: 0;">เลือกแพ็กเกจ 👑</h2>
-                <p style="color: #FFF; font-size: 14px; margin-bottom: 20px;" id="pricing-message">เพื่อความต่อเนื่องในการสร้างคลื่นพลังงานบวก</p>
+                <p style="color: #FFF; font-size: 14px; margin-bottom: 15px;" id="pricing-message">เพื่อความต่อเนื่องในการสร้างคลื่นพลังงานบวก</p>
                 
-                <!-- ปุ่มทดลองใช้ฟรี (จะซ่อนอัตโนมัติถ้าเคยใช้แล้ว) -->
+                <!-- ปุ่มทดลองใช้ฟรี (ซ่อนอัตโนมัติถ้าเคยใช้แล้ว) -->
                 <button class="btn btn-trial" id="btn-free-trial" onclick="startTrial()">✨ ทดลองใช้ฟรี 7 วัน</button>
                 
-                <!-- ปุ่มชำระเงินผ่าน LINE OA (แก้ไขให้ลิงก์ตรงด้วย location.href) -->
-                <button class="btn btn-line" onclick="location.href='https://line.me/R/ti/p/@richieecohub'">รายเดือน 199 บาท (สมัครผ่าน LINE)</button>
-                <button class="btn btn-line" onclick="location.href='https://line.me/R/ti/p/@richieecohub'">รายปี 1,599 บาท (สมัครผ่าน LINE)</button>
+                <!-- ปุ่มเลือกชำระเงิน -->
+                <button class="btn btn-line" onclick="showQRScreen('monthly')">💳 ชำระรายเดือน (199 บาท)</button>
+                <button class="btn btn-line" onclick="showQRScreen('yearly')">👑 ชำระรายปี (1,599 บาท)</button>
                 
-                <button class="btn btn-outline" style="margin-top: 20px;" onclick="showKeyScreen()">🔑 ฉันมี Serial Key แล้ว</button>
+                <button class="btn btn-outline" style="margin-top: 15px;" onclick="showKeyScreen()">🔑 ฉันมี Serial Key แล้ว</button>
                 
                 <p id="pricing-loading" class="loading-text">กำลังดำเนินการ...</p>
             </div>
         </div>
 
         <!-- ========================================== -->
-        <!-- 3. หน้ากรอกรหัส Premium (Key Screen) -->
+        <!-- 3. หน้าแสดง QR Code สำหรับชำระเงิน -->
+        <!-- ========================================== -->
+        <div class="container hidden" id="screen-qr">
+            <div class="auth-panel fade-in" style="border-color: #00C300;">
+                <h3 id="qr-title" style="color: #69F0AE; margin-top: 0;">QR Code ชำระเงิน</h3>
+                <p style="color: #FFF; font-size: 13px; margin: 0;">สแกน QR Code เพื่อชำระเงินผ่านแอปธนาคาร</p>
+                
+                <div class="qr-box">
+                    <!-- ใส่ลิงก์รูป QR Code ของคุณที่นี่ -->
+                    <img id="qr-image" src="qr-payment.png" alt="QR Code PromptPay">
+                </div>
+                
+                <p id="qr-price" style="color: #FFD54F; font-size: 18px; font-weight: 600; margin: 5px 0;">ยอดชำระ: 199 บาท</p>
+                
+                <button class="btn btn-line" onclick="notifyLine()">💬 โอนแล้ว แจ้งแอดมินผ่าน LINE</button>
+                <button class="btn btn-outline" style="margin-top: 10px;" onclick="backToPricing()">⬅ เปลี่ยนแพ็กเกจ</button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 4. หน้ากรอกรหัส Premium (Key Screen) -->
         <!-- ========================================== -->
         <div class="container hidden" id="screen-key">
             <div class="auth-panel fade-in" style="border-color: #69F0AE;">
@@ -144,7 +166,7 @@
 
 
         <!-- ========================================== -->
-        <!-- 4. ตัวแอปหลัก (MirrorBloom App) -->
+        <!-- 5. ตัวแอปหลัก (MirrorBloom App) -->
         <!-- ========================================== -->
         <div class="container hidden" id="ui-box">
             
@@ -209,12 +231,15 @@
 
     <script>
         // ==========================================
-        // ตั้งค่า URL ของระบบหลังบ้าน (Apps Script)
+        // ⚙️ ตั้งค่าระบบ (แก้ไขข้อมูลของคุณตรงนี้)
         // ==========================================
-        const SCRIPT_URL = 'วาง_URL_ของ_WEB_APP_ตรงนี้'; // <--- แทนที่ด้วย URL ของคุณ
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXNsIgbsuTdQ0bIlKENKdmRjQiksDCP7p-9YrtDL2ayUHmpizCasVNAshZKRREePNzhg/exec'; // URL ของ Google Apps Script
+        const LINE_ID = '@richieecohub';                 // LINE OA ของคุณ (เช่น @mirrorbloom)
 
         let currentUserEmail = "";
         let currentUserName = "";
+        let userStatusType = "new"; // 'new' หรือ 'renewal'
+        let selectedPlanName = "";  // 'รายเดือน' หรือ 'รายปี'
 
         // ==========================================
         // ระบบ Authentication (เข้าสู่ระบบ & ตรวจสอบ)
@@ -241,14 +266,16 @@
                 document.getElementById('screen-login').classList.add('hidden');
 
                 if (result.isNew) {
+                    userStatusType = "new"; // ลูกค้าใหม่
                     document.getElementById('screen-pricing').classList.remove('hidden');
                 } else {
                     if (result.isExpired) {
+                        userStatusType = "renewal"; // ลูกค้าเก่า (ต่ออายุ)
                         document.getElementById('btn-free-trial').style.display = 'none';
                         document.getElementById('pricing-message').innerText = "แพ็กเกจของคุณหมดอายุแล้ว กรุณาต่ออายุเพื่อใช้งานต่อครับ";
                         document.getElementById('screen-pricing').classList.remove('hidden');
                     } else {
-                        startApp();
+                        startApp(); // ยังไม่หมดอายุ เข้าแอปได้เลย
                     }
                 }
             } catch (err) {
@@ -281,13 +308,40 @@
             }
         }
 
+        // ควบคุมการแสดงหน้า QR Code ชำระเงิน
+        function showQRScreen(plan) {
+            document.getElementById('screen-pricing').classList.add('hidden');
+            document.getElementById('screen-qr').classList.remove('hidden');
+
+            if (plan === 'monthly') {
+                selectedPlanName = "รายเดือน";
+                document.getElementById('qr-price').innerText = "ยอดชำระ: 199 บาท";
+                document.getElementById('qr-title').innerText = "QR Code แพ็กเกจรายเดือน";
+            } else {
+                selectedPlanName = "รายปี";
+                document.getElementById('qr-price').innerText = "ยอดชำระ: 1,599 บาท";
+                document.getElementById('qr-title').innerText = "QR Code แพ็กเกจรายปี";
+            }
+        }
+
+        function backToPricing() {
+            document.getElementById('screen-qr').classList.add('hidden');
+            document.getElementById('screen-key').classList.add('hidden');
+            document.getElementById('screen-pricing').classList.remove('hidden');
+        }
+
         function showKeyScreen() {
             document.getElementById('screen-pricing').classList.add('hidden');
             document.getElementById('screen-key').classList.remove('hidden');
         }
-        function backToPricing() {
-            document.getElementById('screen-key').classList.add('hidden');
-            document.getElementById('screen-pricing').classList.remove('hidden');
+
+        // ส่งข้อมูลแจ้งชำระเงินเข้า LINE OA พร้อมสถานะ (สมัครใหม่ / ต่ออายุ)
+        function notifyLine() {
+            let statusText = (userStatusType === "renewal") ? "ต่ออายุสมาชิก" : "สมัครใหม่";
+            let message = `แจ้งชำระเงินแพ็กเกจ${selectedPlanName} (${statusText})%0A- ชื่อ: ${currentUserName}%0A- อีเมล: ${currentUserEmail}%0A(แนบสลิปการโอนเงินด้านล่างนี้ได้เลยค่ะ)`;
+            
+            let lineUrl = `https://line.me/R/ti/p/${@richieecohub}?text=${message}`;
+            location.href = lineUrl;
         }
 
         async function verifyKey() {
