@@ -9,8 +9,7 @@
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            font-family: 'Kanit', sans-serif; overflow: hidden;
-            background-color: #000;
+            font-family: 'Kanit', sans-serif; overflow: hidden; background-color: #000;
         }
 
         .landscape-bg {
@@ -19,9 +18,7 @@
             z-index: 0; transition: filter 3s ease;
         }
 
-        #effects-canvas {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none;
-        }
+        #effects-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; }
 
         .ui-layer {
             position: relative; z-index: 10; height: 100%; display: flex;
@@ -37,7 +34,7 @@
         .fade-in { animation: fadeIn 0.8s forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- รูปแบบกล่องข้อความ (MirrorBloom) --- */
+        /* --- รูปแบบกล่องข้อความ --- */
         .brown-leaf, .yellow-leaf, .blue-leaf {
             width: 100%; padding: 20px; font-size: 16px; line-height: 1.5;
             resize: none; outline: none; box-sizing: border-box; font-family: 'Kanit', sans-serif;
@@ -52,11 +49,9 @@
         .bloom-input { border-radius: 25px; background: rgba(233, 30, 99, 0.2); border: 2px solid #F48FB1; height: 45px; }
         .core-focus-display { background: rgba(255, 202, 40, 0.9); color: #4E342E; padding: 10px; border-radius: 15px; margin-bottom: 12px; font-weight: 500; }
 
-        /* --- ข้อความทำสมาธิ --- */
         .breathe-text { color: #fff; font-size: 26px; text-shadow: 0 4px 15px rgba(0,0,0,1); animation: breathePulse 4s infinite ease-in-out; margin: 0; padding: 20px; }
         @keyframes breathePulse { 0% { opacity: 0.1; transform: scale(0.95); } 50% { opacity: 1; transform: scale(1.05); } 100% { opacity: 0.1; transform: scale(0.95); } }
 
-        /* --- ปุ่มกด --- */
         .btn {
             margin-top: 15px; padding: 12px 35px; font-size: 16px; font-weight: 600; width: 100%;
             border-radius: 30px; cursor: pointer; border: 2px solid #fff; color: white;
@@ -73,7 +68,6 @@
         .announce-text { color: #fff; font-size: 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); margin-bottom: 15px; }
         .possibility-text { color: #69F0AE; font-weight: 600; font-size: 20px; }
 
-        /* --- UI ระบบสมาชิก (Login/Pricing/QR) --- */
         .auth-panel { background: rgba(20, 20, 20, 0.9); border: 2px solid #4DD0E1; padding: 25px 20px; border-radius: 20px; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
         .auth-input { width: 100%; height: 45px; border-radius: 10px; background: rgba(255,255,255,0.1); border: 1px solid #FFF; padding: 10px; margin: 8px 0; color: #FFF; font-family: 'Kanit'; text-align: center; box-sizing: border-box; font-size: 16px; }
         .btn-trial { background: #E91E63; border-color: #F48FB1; box-shadow: 0 5px 0 #AD1457; }
@@ -91,53 +85,45 @@
 
     <div class="ui-layer">
         
-        <!-- ========================================== -->
-        <!-- 1. หน้าเข้าสู่ระบบ (Login Screen) -->
-        <!-- ========================================== -->
+        <!-- 1. หน้าเข้าสู่ระบบ -->
         <div class="container" id="screen-login">
             <div class="auth-panel fade-in">
                 <h2 style="color: #4DD0E1; margin-top: 0;">MirrorBloom 🌸</h2>
-                <p style="color: #FFF; font-size: 14px; margin-bottom: 20px;">กรุณาระบุตัวตนเพื่อเข้าสู่พื้นที่ยกระดับพลังงานของคุณ</p>
+                <p style="color: #FFF; font-size: 13px; margin-bottom: 15px;">
+                    ✨ **ผู้ใช้เดิม:** กรอกเฉพาะ "ชื่อโปรไฟล์"<br>
+                    ✨ **ผู้ใช้ใหม่:** กรอกทั้ง "ชื่อโปรไฟล์" และ "อีเมล"
+                </p>
                 
-                <input type="text" id="input-name" class="auth-input" placeholder="ชื่อของคุณ / โปรไฟล์">
-                <input type="email" id="input-email" class="auth-input" placeholder="อีเมลของคุณ">
+                <input type="text" id="input-name" class="auth-input" placeholder="ชื่อโปรไฟล์ของคุณ">
+                <input type="email" id="input-email" class="auth-input" placeholder="อีเมล (เฉพาะครั้งแรกที่สมัคร)">
                 
                 <button class="btn btn-primary" id="btn-login" onclick="handleLogin()">เข้าสู่ระบบ</button>
                 <p id="login-loading" class="loading-text">กำลังตรวจสอบข้อมูล...</p>
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- 2. หน้าเลือกแพ็กเกจ (Pricing Screen) -->
-        <!-- ========================================== -->
+        <!-- 2. หน้าเลือกแพ็กเกจ -->
         <div class="container hidden" id="screen-pricing">
             <div class="auth-panel fade-in" style="border-color: #FFD54F;">
                 <h2 style="color: #FFD54F; margin-top: 0;">เลือกแพ็กเกจ 👑</h2>
                 <p style="color: #FFF; font-size: 14px; margin-bottom: 15px;" id="pricing-message">เพื่อความต่อเนื่องในการสร้างคลื่นพลังงานบวก</p>
                 
-                <!-- ปุ่มทดลองใช้ฟรี (ซ่อนอัตโนมัติถ้าเคยใช้แล้ว) -->
                 <button class="btn btn-trial" id="btn-free-trial" onclick="startTrial()">✨ ทดลองใช้ฟรี 7 วัน</button>
-                
-                <!-- ปุ่มเลือกชำระเงิน -->
                 <button class="btn btn-line" onclick="showQRScreen('monthly')">💳 ชำระรายเดือน (199 บาท)</button>
                 <button class="btn btn-line" onclick="showQRScreen('yearly')">👑 ชำระรายปี (1,599 บาท)</button>
-                
                 <button class="btn btn-outline" style="margin-top: 15px;" onclick="showKeyScreen()">🔑 ฉันมี Serial Key แล้ว</button>
                 
                 <p id="pricing-loading" class="loading-text">กำลังดำเนินการ...</p>
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- 3. หน้าแสดง QR Code สำหรับชำระเงิน -->
-        <!-- ========================================== -->
+        <!-- 3. หน้าแสดง QR Code -->
         <div class="container hidden" id="screen-qr">
             <div class="auth-panel fade-in" style="border-color: #00C300;">
                 <h3 id="qr-title" style="color: #69F0AE; margin-top: 0;">QR Code ชำระเงิน</h3>
                 <p style="color: #FFF; font-size: 13px; margin: 0;">สแกน QR Code เพื่อชำระเงินผ่านแอปธนาคาร</p>
                 
                 <div class="qr-box">
-                    <!-- ใส่ลิงก์รูป QR Code ของคุณที่นี่ -->
                     <img id="qr-image" src="qr-payment.png" alt="QR Code PromptPay">
                 </div>
                 
@@ -148,13 +134,11 @@
             </div>
         </div>
 
-        <!-- ========================================== -->
-        <!-- 4. หน้ากรอกรหัส Premium (Key Screen) -->
-        <!-- ========================================== -->
+        <!-- 4. หน้ากรอกรหัส Serial Key -->
         <div class="container hidden" id="screen-key">
             <div class="auth-panel fade-in" style="border-color: #69F0AE;">
                 <h3 style="color: #69F0AE; margin-top: 0;">ปลดล็อก Premium 🌟</h3>
-                <p style="color: #FFF; font-size: 14px;">(ระบบจำอีเมลของคุณไว้แล้ว กรอกแค่รหัส)</p>
+                <p style="color: #FFF; font-size: 14px;">กรอกรหัส Serial Key ที่ได้รับจากแอดมิน</p>
                 
                 <input type="text" id="input-key" class="auth-input" placeholder="กรอก Serial Key (เช่น MB-XXXX)">
                 
@@ -164,13 +148,8 @@
             </div>
         </div>
 
-
-        <!-- ========================================== -->
         <!-- 5. ตัวแอปหลัก (MirrorBloom App) -->
-        <!-- ========================================== -->
         <div class="container hidden" id="ui-box">
-            
-            <!-- STAGE 1: The Release -->
             <div id="screen-release" class="fade-in">
                 <h3>1. ปลดปล่อยอารมณ์ด้านแย่ ที่คุณกำลังเป็นอยู่ตอนนี้</h3>
                 <textarea id="text-anger" class="brown-leaf" placeholder="ยอมรับและปลดปล่อย... พิมพ์สิ่งที่คุณรู้สึกติดขัด"></textarea>
@@ -181,7 +160,6 @@
                 <p class="breathe-text">สูดหายใจเข้าลึก ๆ<br>ตอนนี้คุณได้ปลดปล่อย<br>สิ่งที่ฉุดรั้งคุณไปแล้ว</p>
             </div>
 
-            <!-- STAGE 2: The Pivot -->
             <div id="screen-pivot" class="hidden">
                 <h3>2. หมุนทิศทางความคิด (Pivot)</h3>
                 <p class="announce-text">แล้วตอนนี้ คุณ <span class="highlight">"ต้องการที่จะทำ"</span> อะไร ?</p>
@@ -189,7 +167,6 @@
                 <button class="btn btn-pivot" onclick="proceedToStage3()">ล็อกเป้าหมายใหม่</button>
             </div>
 
-            <!-- STAGE 3: The Bridge -->
             <div id="screen-bridge" class="hidden">
                 <h3>3. สร้างสะพานความเชื่อ (Focus Wheel)</h3>
                 <p class="announce-text">ให้เหตุผลที่สนับสนุน <span class="possibility-text">"ความเป็นไปได้"</span> นี้</p>
@@ -202,7 +179,6 @@
                 <button class="btn btn-bridge" onclick="proceedToStage4()">สร้างความเชื่อมั่น</button>
             </div>
 
-            <!-- STAGE 4: The Creator -->
             <div id="screen-creator" class="hidden">
                 <h3>4. กำหนดพลังงานล่วงหน้า (Pre-paving)</h3>
                 <p class="announce-text">ก่อนที่คุณจะปิดหน้าจอนี้ไป คุณตั้งใจจะใช้เวลาต่อจากนี้ เต็มไปด้วยความรู้สึกแบบไหน ?</p>
@@ -210,7 +186,6 @@
                 <button class="btn btn-creator" onclick="proceedToStage5()">ส่งเจตจำนงออกไป</button>
             </div>
 
-            <!-- STAGE 5: The Bloom (Gratitude) -->
             <div id="screen-bloom" class="hidden">
                 <h3>5. การผลิบาน (Gratitude)</h3>
                 <p class="announce-text">พิมพ์สิ่งที่คุณรู้สึก "ขอบคุณ" ในชีวิตตอนนี้ 3 อย่าง</p>
@@ -223,36 +198,61 @@
             <div id="screen-success" class="hidden">
                 <h2 class="success-title">✨ ยินดีด้วย!</h2>
                 <p class="success-desc">คุณได้ปลดล็อกและยกระดับคลื่นพลังงานสำเร็จแล้ว</p>
-                <button class="btn btn-bloom" onclick="location.reload()" style="background: rgba(255,255,255,0.2); border-color: #fff;">เริ่มต้นใหม่</button>
+                <!-- ปุ่มเริ่มต้นใหม่ได้รับการแก้ไขสีให้กลับมาเด่นชัดเรียบร้อยแล้วครับ -->
+                <button class="btn btn-bloom" onclick="location.reload()">เริ่มต้นใหม่</button>
             </div>
         </div>
 
     </div>
 
     <script>
-        // ==========================================
-        // ⚙️ ตั้งค่าระบบ (แก้ไขข้อมูลของคุณตรงนี้)
-        // ==========================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXNsIgbsuTdQ0bIlKENKdmRjQiksDCP7p-9YrtDL2ayUHmpizCasVNAshZKRREePNzhg/exec'; // URL ของ Google Apps Script
-        const LINE_ID = '@richieecohub';                 // LINE OA ของคุณ (เช่น @mirrorbloom)
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXNsIgbsuTdQ0bIlKENKdmRjQiksDCP7p-9YrtDL2ayUHmpizCasVNAshZKRREePNzhg/exec'; // <--- ใส่ URL Apps Script ของคุณ
+        const LINE_ID = '@richieecohub'; // <--- ใส่ LINE OA ของคุณ
 
         let currentUserEmail = "";
         let currentUserName = "";
-        let userStatusType = "new"; // 'new' หรือ 'renewal'
-        let selectedPlanName = "";  // 'รายเดือน' หรือ 'รายปี'
+        let userStatusType = "new"; 
+        let selectedPlanName = "";  
 
-        // ==========================================
-        // ระบบ Authentication (เข้าสู่ระบบ & ตรวจสอบ)
-        // ==========================================
         async function handleLogin() {
             const name = document.getElementById('input-name').value.trim();
             const email = document.getElementById('input-email').value.trim();
-            if(!name || !email) return alert("กรุณากรอกชื่อและอีเมลให้ครบถ้วนครับ");
+            if(!name) return alert("กรุณากรอกชื่อโปรไฟล์ครับ");
 
             document.getElementById('btn-login').style.display = 'none';
             document.getElementById('login-loading').style.display = 'block';
 
             try {
+                if (!email) {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({ action: "login_by_name", name: name }),
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                    });
+                    const result = await response.json();
+
+                    if (!result.success) {
+                        alert(result.message);
+                        document.getElementById('btn-login').style.display = 'block';
+                        document.getElementById('login-loading').style.display = 'none';
+                        return;
+                    }
+
+                    currentUserEmail = result.email;
+                    currentUserName = result.name;
+                    document.getElementById('screen-login').classList.add('hidden');
+
+                    if (result.isExpired) {
+                        userStatusType = "renewal";
+                        document.getElementById('btn-free-trial').style.display = 'none';
+                        document.getElementById('pricing-message').innerText = "แพ็กเกจของคุณหมดอายุแล้ว กรุณาต่ออายุเพื่อใช้งานต่อครับ";
+                        document.getElementById('screen-pricing').classList.remove('hidden');
+                    } else {
+                        startApp();
+                    }
+                    return;
+                }
+
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     body: JSON.stringify({ action: "login", email: email }),
@@ -262,20 +262,19 @@
 
                 currentUserEmail = email;
                 currentUserName = name;
-
                 document.getElementById('screen-login').classList.add('hidden');
 
                 if (result.isNew) {
-                    userStatusType = "new"; // ลูกค้าใหม่
+                    userStatusType = "new";
                     document.getElementById('screen-pricing').classList.remove('hidden');
                 } else {
                     if (result.isExpired) {
-                        userStatusType = "renewal"; // ลูกค้าเก่า (ต่ออายุ)
+                        userStatusType = "renewal";
                         document.getElementById('btn-free-trial').style.display = 'none';
                         document.getElementById('pricing-message').innerText = "แพ็กเกจของคุณหมดอายุแล้ว กรุณาต่ออายุเพื่อใช้งานต่อครับ";
                         document.getElementById('screen-pricing').classList.remove('hidden');
                     } else {
-                        startApp(); // ยังไม่หมดอายุ เข้าแอปได้เลย
+                        startApp();
                     }
                 }
             } catch (err) {
@@ -308,7 +307,6 @@
             }
         }
 
-        // ควบคุมการแสดงหน้า QR Code ชำระเงิน
         function showQRScreen(plan) {
             document.getElementById('screen-pricing').classList.add('hidden');
             document.getElementById('screen-qr').classList.remove('hidden');
@@ -335,13 +333,10 @@
             document.getElementById('screen-key').classList.remove('hidden');
         }
 
-        // ส่งข้อมูลแจ้งชำระเงินเข้า LINE OA พร้อมสถานะ (สมัครใหม่ / ต่ออายุ)
         function notifyLine() {
             let statusText = (userStatusType === "renewal") ? "ต่ออายุสมาชิก" : "สมัครใหม่";
             let message = `แจ้งชำระเงินแพ็กเกจ${selectedPlanName} (${statusText})%0A- ชื่อ: ${currentUserName}%0A- อีเมล: ${currentUserEmail}%0A(แนบสลิปการโอนเงินด้านล่างนี้ได้เลยค่ะ)`;
-            
-            let lineUrl = `https://line.me/R/ti/p/${LINE_ID}?text=${message}`;
-            location.href = lineUrl;
+            location.href = `https://line.me/R/ti/p/${LINE_ID}?text=${message}`;
         }
 
         async function verifyKey() {
@@ -379,9 +374,7 @@
             document.getElementById('ui-box').classList.remove('hidden');
         }
 
-        // ==========================================
-        // ระบบกราฟิก (Canvas Safe Mode)
-        // ==========================================
+        // --- ระบบกราฟิกแคนวาส ---
         const canvas = document.getElementById('effects-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -466,9 +459,7 @@
         for (let i = 0; i < 6; i++) butterflies.push(new Butterfly());
         animationLoop();
 
-        // ==========================================
-        // ระบบ Flow แอปพลิเคชัน (MirrorBloom)
-        // ==========================================
+        // --- ระบบขั้นตอนในแอป ---
         function burnProcess() {
             if (isProcessing) return;
             const angerText = document.getElementById('text-anger');
