@@ -61,7 +61,8 @@
         .btn-burn { background: #ff7f50; box-shadow: 0 5px 0 #d25324; }
         .btn-pivot { background: #FF8F00; box-shadow: 0 5px 0 #E65100; }
         .btn-bridge { background: #4CAF50; box-shadow: 0 5px 0 #2E7D32; }
-        .btn-bloom { background: #E91E63; box-shadow: 0 5px 0 #AD1457; }
+        .btn-creator { background: #00838F; border-color: #4DD0E1; box-shadow: 0 5px 0 #004D40; } /* 🌟 สีเข้ากับธีมบลูเลิฟ (Pre-paving) */
+        .btn-bloom { background: #E91E63; border-color: #F48FB1; box-shadow: 0 5px 0 #AD1457; }
         .btn:active { transform: translateY(5px); box-shadow: 0 0px 0 transparent !important; }
 
         h3 { color: #fff; text-shadow: 0 3px 6px rgba(0,0,0,0.8); margin-top: 0; font-size: 22px; }
@@ -198,7 +199,6 @@
             <div id="screen-success" class="hidden">
                 <h2 class="success-title">✨ ยินดีด้วย!</h2>
                 <p class="success-desc">คุณได้ปลดล็อกและยกระดับคลื่นพลังงานสำเร็จแล้ว</p>
-                <!-- ปุ่มเริ่มต้นใหม่ได้รับการแก้ไขสีให้กลับมาเด่นชัดเรียบร้อยแล้วครับ -->
                 <button class="btn btn-bloom" onclick="location.reload()">เริ่มต้นใหม่</button>
             </div>
         </div>
@@ -207,7 +207,7 @@
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwXNsIgbsuTdQ0bIlKENKdmRjQiksDCP7p-9YrtDL2ayUHmpizCasVNAshZKRREePNzhg/exec'; // <--- ใส่ URL Apps Script ของคุณ
-        const LINE_ID = '@richieecohub'; // <--- ใส่ LINE OA ของคุณ
+        const LINE_ID = '@richieecohub';  // <--- ใส่ LINE OA ของคุณ
 
         let currentUserEmail = "";
         let currentUserName = "";
